@@ -1,0 +1,24 @@
+﻿.max-width {
+	max-width: 100%;
+	width: 100%;
+
+}
+
+.div-table {
+	display: table;
+	width: 100%;
+}
+
+.div-table-row {
+	display: table-row
+}
+
+.div-table-row .table-header {
+	font-size: 2rem;
+	font-weight: bold;
+}
+
+.div-table-cell {
+	display: table-cell;
+	border: 1px solid red;
+}
