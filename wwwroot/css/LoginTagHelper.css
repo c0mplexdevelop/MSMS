@@ -1,0 +1,22 @@
+﻿.input-form {
+	width: 60%;
+	height: 2rem;
+	border: none;
+	border-bottom: 1px solid #000000;
+	background-color: transparent;
+	margin-bottom: 1rem;
+	flex-grow: 1;
+	transition: 150ms ease-in;
+}
+
+	.input-form:focus {
+		background-color: white;
+		transform: scale(1.1);
+		flex-grow: 2;
+		border-radius: 0.4rem;
+	}
+
+.text-error {
+	color: #dc3545 !important
+}
+
