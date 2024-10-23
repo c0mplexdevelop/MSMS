@@ -1,7 +1,12 @@
+using MSMS.Data.Repos;
+using MSMS.Models.Dashboard;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IDatabaseRepository<User>, UserRepository>();
 
 var app = builder.Build();
 

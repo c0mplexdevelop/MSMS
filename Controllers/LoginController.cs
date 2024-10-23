@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using MSMS.Data.Repos;
 using MSMS.Models;
+using MSMS.Models.Dashboard;
+using MSMS.Models.Login;
 using System.Diagnostics;
 
 namespace MSMS.Controllers;
@@ -8,14 +11,29 @@ public class LoginController : Controller
 {
     private readonly ILogger<LoginController> _logger;
 
-    public LoginController(ILogger<LoginController> logger)
+    private IDatabaseRepository<User> _userRepository;
+
+    public LoginController(ILogger<LoginController> logger, IDatabaseRepository<User> databaseRepository)
     {
         _logger = logger;
+        _userRepository = databaseRepository;
     }
 
     public IActionResult Login()
     {
         return View();
+    }
+
+    [HttpPost]
+    public IActionResult Login(UserCredential model)
+    {
+        var queriedUser = _userRepository.GetByCredential(model);
+        if (queriedUser is null)
+        {
+            return View(model);
+        }
+
+        return RedirectToAction("Index", "Dashboard", queriedUser);
     }
 
     public IActionResult Privacy()

@@ -28,28 +28,6 @@ form {
     align-items: center;
 }
 
-input[type=text], input[type=password] {
-	width: 60%;
-    height: 2rem;
-	border: none;
-	border-bottom: 1px solid #000000;
-	background-color: transparent;
-	margin-bottom: 20px;
-    flex-grow: 1;
-
-    transition: 150ms ease-in;
-}
-
-input[type=text]:focus, input[type=password]:focus {
-	background-color: white;
-
-    transform: scale(1.1);
-    flex-grow: 2;
-
-    border-radius: 0.4rem;
-}
-
-
 .form-group {
 	width: 60%;
 	margin-bottom: 20px;
@@ -61,4 +39,23 @@ input[type=text]:focus, input[type=password]:focus {
 
 h1, span {
     text-align: left;
+}
+
+.submit-button {
+    border: none;
+    width: 17%;
+    padding: 0.9rem;
+
+    font-size: 1rem;
+    border-radius: 0.8rem;
+    background-color: #92d8c1;
+
+    transition: 100ms ease-in;
+}
+
+.submit-button:hover {
+	background-color: white;
+    border-radius: 0;
+
+    transform: scale(1.1)
 }
