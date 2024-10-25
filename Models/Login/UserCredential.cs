@@ -12,4 +12,9 @@ public class UserCredential
     [DataType(DataType.Password)]
     [StringLength(int.MaxValue, MinimumLength = 7, ErrorMessage = "Password must be at least 7 characters long")]
     public string Password { get; set; } = string.Empty;
+
+    public override string ToString()
+    {
+        return $"{Username} {Password}";
+    }
 }
