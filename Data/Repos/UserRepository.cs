@@ -15,6 +15,10 @@ public class UserRepository : IDatabaseRepository<User>
                 new() { Id = 2, Name = "Jane Doe" }
             };
 
+        if (context.Users.Any())
+        {
+            return;
+        }
         context.Users.AddRange(users);
         context.SaveChanges();
     }
