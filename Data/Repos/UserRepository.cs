@@ -11,7 +11,7 @@ public class UserRepository : IDatabaseRepository<User>
     {
         using var context = new DatabaseContext();
         var users = new List<User> {
-                new() { Id = 1, Name = "John Doe", Username = "c0mplex", Password = "test"},
+                new() { Id = 1, Name = "John Doe", Username = "c0mplex", Password = "test123"},
                 new() { Id = 2, Name = "Jane Doe" }
             };
 
@@ -23,13 +23,13 @@ public class UserRepository : IDatabaseRepository<User>
         context.SaveChanges();
     }
 
-        public IEnumerable<User> GetAll()
+    public IEnumerable<User> GetAll()
+    {
+        using(var context = new DatabaseContext())
         {
-            using(var context = new DatabaseContext())
-            {
-                return [.. context.Users];
-            }
+            return [.. context.Users];
         }
+    }
 
     public User? GetByCredential(UserCredential userCredential)
     {
