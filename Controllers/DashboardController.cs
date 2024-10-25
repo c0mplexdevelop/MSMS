@@ -5,7 +5,7 @@ namespace MSMS.Controllers;
 
 public class DashboardController : Controller
 {
-    public IActionResult Index(User user)
+    public IActionResult Notifications(User user)
     {
         return View(user);
     }
