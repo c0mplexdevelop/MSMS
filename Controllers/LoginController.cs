@@ -19,21 +19,24 @@ public class LoginController : Controller
         _userRepository = databaseRepository;
     }
 
+    [HttpGet]
     public IActionResult Login()
     {
         return View();
     }
-
+        
     [HttpPost]
     public IActionResult Login(UserCredential model)
     {
         var queriedUser = _userRepository.GetByCredential(model);
+        _logger.LogInformation(model.ToString());
+        _logger.LogDebug(queriedUser?.ToString());
         if (queriedUser is null)
         {
             return View(model);
         }
 
-        return RedirectToAction("Index", "Dashboard", queriedUser);
+        return RedirectToAction("Notifications", "Dashboard", queriedUser);
     }
 
     public IActionResult Privacy()
