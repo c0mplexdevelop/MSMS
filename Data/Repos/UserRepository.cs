@@ -16,6 +16,7 @@ public class UserRepository : IDatabaseRepository<User>
             };
 
         context.Users.AddRange(users);
+        context.SaveChanges();
     }
 
         public IEnumerable<User> GetAll()
