@@ -20,4 +20,9 @@ public class User
 
     public string Role { get; set; } = string.Empty;
 
+    public override string ToString()
+    {
+        return $"Id: {Id}, Name: {Name}, Email: {Email}, Username: {Username}, Password: {Password}, Role: {Role}";
+    }
+
 }

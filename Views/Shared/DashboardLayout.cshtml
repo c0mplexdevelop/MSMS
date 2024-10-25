@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MSMS</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MSMS.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/DashboardTagHelper.css" asp-append-version="true" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="nav-bar">
+            <div class="logo">
+                <img src="" alt="">
+                <span></span>
+            </div>
+        </header>
+        <div class="menu">
+            <div class="menu-item">
+                <div class="logo">
+                    <img src="~/images/Dashboard/First-menu-item-firstimg.svg" alt="">
+                    <img src="~/images/Dashboard/First-menu-item-secondimg.svg" alt="">
+                </div>
+
+                <span>
+                    Laboratory and Diagnostic
+                </span>
+
+            </div>
+
+            <div class="menu-item">
+                <div class="logo">
+                    <img src="~/images/Dashboard/Second-menu-item-firstimg.svg" alt="">
+                    <img src="~/images/Dashboard/Second-menu-item-secondimg.svg" alt="">
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <div class="logo">
+                    <img src="~/images/Dashboard/Third-menu-item-firstimg.svg" alt="">
+                    <img src="~/images/Dashboard/Third-menu-item-secondimg.svg" alt="">
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <div class="logo">
+                    <img src="~/images/Dashboard/Fourth-menu-item-firstimg.svg" alt="">
+                    <img src="~/images/Dashboard/Fourth-menu-item-secondimg.svg" alt="">
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <div class="logo">
+                    <img src="~/images/Dashboard/Fifth-menu-item-firstimg.svg" alt="">
+                    <img src="~/images/Dashboard/Fifth-menu-item-secondimg.svg" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="main">
+            @RenderBody()
+        </div>
+    </div>
+
+    @await RenderSectionAsync("Scripts", required: false)
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
