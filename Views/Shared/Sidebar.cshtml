@@ -1,0 +1,72 @@
+﻿@model MSMS.Models.Shared.MenuModel
+
+@{
+    var activeSection = ViewBag.ActiveSection as string;
+}
+
+<div class="menu-item @(activeSection == "Diagnosis" ? "active" : "")" data-active="false">
+    <a href="/Dashboard/Diagnosis">
+        <div class="logo">
+            <img src="~/images/Dashboard/First-menu-item-firstimg.svg" alt="">
+            <img src="~/images/Dashboard/First-menu-item-secondimg.svg" alt="">
+        </div>
+    </a>
+
+    <span>
+        Laboratory and Diagnostic
+    </span>
+</div>
+
+<div class="menu-item @(activeSection == "Inventory" ? "active" : "")" data-active="false">
+
+    <a href="/Dashboard/Inventory">
+        <div class="logo">
+            <img src="~/images/Dashboard/Second-menu-item-firstimg.svg" alt="">
+            <img src="~/images/Dashboard/Second-menu-item-secondimg.svg" alt="">
+        </div>
+    </a>
+
+    <span>
+        Medicinal Inventory
+    </span>
+</div>
+
+<div class="menu-item @(activeSection == "Reports" ? "active" : "")" data-redirect="false">
+    <a href="/Dashboard/Reports">
+        <div class="logo">
+            <img src="~/images/Dashboard/Third-menu-item-firstimg.svg" alt="">
+            <img src="~/images/Dashboard/Third-menu-item-secondimg.svg" alt="">
+        </div>
+    </a>
+
+    <span>
+        Reporting and Analytics
+    </span>
+</div>
+
+<div class="menu-item @(activeSection == "Payments" ? "active" : "")" data-ref="Payments">
+    <a href="/Dashboard/Payments">
+        <div class="logo">
+            <img src="~/images/Dashboard/Fourth-menu-item-firstimg.svg" alt="">
+            <img src="~/images/Dashboard/Fourth-menu-item-secondimg.svg" alt="">
+        </div>
+    </a>
+
+
+    <span>
+        Payments
+    </span>
+</div>
+
+<div class="menu-item @(activeSection == "Notifications" ? "active" : "")" data-ref="Notifications">
+    <a href="/Dashboard/Notifications">
+        <div class="logo">
+            <img src="~/images/Dashboard/Fifth-menu-item-firstimg.svg" alt="">
+            <img src="~/images/Dashboard/Fifth-menu-item-secondimg.svg" alt="">
+        </div>
+    </a>
+
+    <span>
+        Notifications and Alerts
+    </span>
+</div>
