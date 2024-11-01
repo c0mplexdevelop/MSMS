@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Medicine Inventory";
 }
 
@@ -11,28 +10,71 @@
         <div class="div-table-row table-header">
 
             <div class="div-table-cell">
-                <h1>ID</h1>
+                <span>ID</span>
             </div>
             <div class="div-table-cell">
-                <h1>Generic Name</h1>
+                <span>Brand Name</span>
             </div>
             <div class="div-table-cell">
-                <h1>Brand Name</h1>
+                <span>Generic Name</span>
+            </div>
+            <div class="div-table-cell">
+                <span>Quantity</span>
+            </div>
+            <div class="div-table-cell">
+                <span>Dosage</span>
+            </div>
+            <div class="div-table-cell">
+                <span>Expiry Date</span>
+            </div>
+            <div class="div-table-cell">
+                <span>Supplied Date</span>
+            </div>
+            <div class="div-table-cell">
+                <span>Supplier</span>
+            </div>
+            <div class="div-table-cell">
+                <span>Price</span>
+            </div>
+            <div class="div-table-cell">
+                <span>Reorder Level</span>
             </div>
 
         </div>
-        <div class="div-table-row">
-
-            <div class="div-table-cell">
-                <h1>check</h1>
+        @foreach(var medicine in Model.Medicines)
+        {
+            <div class="div-table-row">
+                <div class="div-table-cell">
+                    <span>@medicine.Id</span>
+                </div>
+                <div class="div-table-cell">
+                    <span>@medicine.BrandName</span>
+                </div>
+                <div class="div-table-cell">
+                    <span>@medicine.GenericName</span>
+                </div>
+                <div class="div-table-cell">
+                    <span>@medicine.Quantity</span>
+                </div>
+                <div class="div-table-cell">
+                    <span>@medicine.Dosage</span>
+                </div>
+                <div class="div-table-cell">
+                    <span>@medicine.ExpiryDate</span>
+                </div>
+                <div class="div-table-cell">
+                    <span>@medicine.SuppliedDate</span>
+                </div>
+                <div class="div-table-cell">
+                    <span>@medicine.Supplier.Name</span>
+                </div>
+                <div class="div-table-cell">
+                    <span>@medicine.Price</span>
+                </div>
+                <div class="div-table-cell">
+                    <span>@medicine.ReorderLevel</span>
+                </div>
             </div>
-            <div class="div-table-cell">
-                <h1>check</h1>
-            </div>
-            <div class="div-table-cell">
-                <h1>check</h1>
-            </div>
-
-        </div>
+        }
     </div>
 </div>
