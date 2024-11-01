@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MSMS.Data.Repos;
 using MSMS.Models.Dashboard;
+using MSMS.Models.MedicineInventory;
 
 namespace MSMS.Controllers;
 
@@ -7,9 +9,14 @@ public class DashboardController : Controller
 {
     private ILogger<DashboardController> _logger;
 
-    public DashboardController(ILogger<DashboardController> logger)
+    private IMedicineDatabaseRepository _medicineDb;
+    private IDatabaseRepository<Supplier> _supplierDb;
+
+    public DashboardController(ILogger<DashboardController> logger, IMedicineDatabaseRepository medicineDb, IDatabaseRepository<Supplier> supplierDb)
     {
         _logger = logger;
+        _medicineDb = medicineDb;
+        _supplierDb = supplierDb;
     }
 
     public IActionResult Notifications(User user)
@@ -18,10 +25,20 @@ public class DashboardController : Controller
         return View(user);
     }
 
-    public IActionResult Inventory(User user)
+    public IActionResult Inventory(CombinedMedicineSupplierModel model)
     {
+        model.Medicines = _medicineDb.GetAll();
+        foreach(var medicine in model.Medicines)
+        {
+            _logger.LogInformation(medicine.ToString());
+        }
+
+        foreach(var supplier in _supplierDb.GetAll())
+        {
+            _logger.LogInformation(supplier.ToString());
+        }
         ViewBag.ActiveSection = "Inventory";
-        return View(user);
+        return View(model);
     }
 
     public IActionResult Diagnosis(User user)
