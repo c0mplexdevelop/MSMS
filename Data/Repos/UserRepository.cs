@@ -4,7 +4,7 @@ using MSMS.Models.Login;
 
 namespace MSMS.Data.Repos;
 
-public class UserRepository : IDatabaseRepository<User>
+public class UserRepository : IUserDatabaseRepository
 {
 
     public UserRepository()
