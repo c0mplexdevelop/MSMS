@@ -1,5 +1,5 @@
 using MSMS.Data.Repos;
-using MSMS.Models.Dashboard;
+using MSMS.Models.MedicineInventory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 
-builder.Services.AddScoped<IDatabaseRepository<User>, UserRepository>();
+builder.Services.AddScoped<IUserDatabaseRepository, UserRepository>();
+builder.Services.AddScoped<IMedicineDatabaseRepository, MedicineRepository>();
+builder.Services.AddScoped<IDatabaseRepository<Supplier>, SupplierRepository>();
 
 var app = builder.Build();
 
