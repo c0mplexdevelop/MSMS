@@ -11,9 +11,9 @@ public class LoginController : Controller
 {
     private readonly ILogger<LoginController> _logger;
 
-    private IDatabaseRepository<User> _userRepository;
+    private IUserDatabaseRepository _userRepository;
 
-    public LoginController(ILogger<LoginController> logger, IDatabaseRepository<User> databaseRepository)
+    public LoginController(ILogger<LoginController> logger, IUserDatabaseRepository databaseRepository)
     {
         _logger = logger;
         _userRepository = databaseRepository;
