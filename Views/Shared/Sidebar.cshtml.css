@@ -40,7 +40,16 @@
 a {
 	height: 60%;
 	display: flex;
+	flex-direction: column;
 	align-items: center;
+	justify-content: center;
+
+	text-decoration: none;
+	color: inherit;
+}
+
+a:link, a:visited, a:hover, a:active {
+	text-decoration: none;
 }
 
 	a .logo {
@@ -54,4 +63,12 @@ a {
 
 .active {
 	background-color: #63CCAC
+}
+
+span {
+	-moz-user-select: inherit;
+	-ms-user-select: inherit;
+	-webkit-user-select: inherit;
+	user-select: none;
+
 }
