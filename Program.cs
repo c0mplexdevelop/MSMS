@@ -16,6 +16,7 @@ builder.Services.AddDbContext<DatabaseContext>(
 builder.Services.AddScoped<IUserDatabaseRepository, UserRepository>();
 builder.Services.AddScoped<IMedicineDatabaseRepository, MedicineRepository>();
 builder.Services.AddScoped<IDatabaseRepository<Supplier>, SupplierRepository>();
+builder.Services.AddScoped<IPatientDatabaseRepository, PatientRepository>();
 
 var app = builder.Build();
 
