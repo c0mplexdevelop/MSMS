@@ -5,19 +5,12 @@ using MSMS.Models.MedicineInventory;
 
 namespace MSMS.Data;
 
-public class DatabaseContext : DbContext
+public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbContext(options)
 {
 
     public DbSet<Medicine> Medicines { get; set; }
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<User> Users { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseInMemoryDatabase("MSMS");
-        optionsBuilder.EnableSensitiveDataLogging();
-        base.OnConfiguring(optionsBuilder);
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
