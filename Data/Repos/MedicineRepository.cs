@@ -52,16 +52,18 @@ public class MedicineRepository : IMedicineDatabaseRepository
         //    Supplier = supplier2
         //};
         
-        if(!context.Medicines.Any())
-        {
-            context.Medicines.AddRange(medicine1, medicine2);
-            context.SaveChanges();
-        }
+
+        //if(!context.Medicines.Any())
+        //{
+        //    context.Medicines.AddRange(medicine1, medicine2);
+        //    context.SaveChanges();
+        //}
 
         //if(!context.Medicines.Any() || !context.Suppliers.Any())
         //{
         //    context.SaveChanges();
 
+        //}
         //}
 
     public Medicine? GetById(int id)
