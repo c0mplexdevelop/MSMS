@@ -2,6 +2,7 @@
 using MSMS.Data.Repos;
 using MSMS.Models.Dashboard;
 using MSMS.Models.MedicineInventory;
+using MSMS.Models.Payments;
 
 namespace MSMS.Controllers;
 
@@ -88,9 +89,49 @@ public class DashboardController : Controller
         return View(user);
     }
 
-    public IActionResult Payments(User user)
+    [HttpGet]
+    public IActionResult Payments()
     {
         ViewBag.ActiveSection = "Payments";
-        return View(user);
+        var model = new PaymentsViewModel();
+        var payments = _paymentDb.GetAll();
+        var patients = _patientDb.GetAll();
+        if (!payments.Any())
+        {
+            _logger.LogInformation("No payments found");
+        }
+        foreach (var payment in payments)
+        {
+            _logger.LogInformation(payment.ToString() ?? "null");
+        }
+        model.Payments = payments.ToList();
+        model.Patients = patients.ToList();
+        _logger.LogInformation($"{model.Payments.Count}");
+        return View(model);
+    }
+
+    [HttpPost]
+    public IActionResult Payments(PaymentsViewModel model)
+    {
+        _logger.LogInformation($"{model is null}");
+        _logger.LogInformation($"{model?.Payments is null}");
+        //if (!ModelState.IsValid)
+        //{
+        //    model = new PaymentsViewModel
+        //    {
+        //        Payments = payments.ToList()
+        //    };
+
+        //    _logger.LogInformation("Model state is invalid");
+        //    return View("Payments", model);
+        //}
+        foreach (var payment in model.Payments)
+        {
+            _logger.LogInformation($"{payment.PaymentStatus.ToString()}");
+            _paymentDb.Update(payment);
+        }
+        _paymentDb.SaveChanges();
+        _logger.LogInformation($"{model.Payments[0].PaymentStatus.ToString()}");
+        return View(model);
     }
 }

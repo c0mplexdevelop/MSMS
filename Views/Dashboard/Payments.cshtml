@@ -1,5 +1,129 @@
 ﻿@{
-
+    ViewData["Title"] = "Payments";
 }
 
-Payments
+@using MSMS.Models.Payments;
+
+@model MSMS.Models.Payments.PaymentsViewModel
+
+<div class="container">
+    <div class="max-w search-bar">
+        <form asp-action="Payments" method="post" class="inventory-form">
+            <span><i class="fas fa-search"></i></span>
+            <input type="text" class="input-search" name="searchString" value="@ViewData["SearchString"]" />
+            <input type="submit" hidden />
+        </form>
+    </div>
+    <div class="div-table">
+        <div class="div-table-row" id="header-row">
+            <div class="div-table-cell header">
+                <span>
+                    Patient ID
+                </span>
+            </div>
+            <div class="div-table-cell header">
+                <span>
+                    Patient's First Name
+                </span>
+            </div>
+            <div class="div-table-cell header">
+                <span>
+                    Patient's Middle Name
+                </span>
+            </div>
+            <div class="div-table-cell header">
+                <span>
+                    Patient's Last Name
+                </span>
+            </div>
+            <div class="div-table-cell header">
+                <span>
+                    Contact No.
+                </span>
+            </div>
+            <div class="div-table-cell header">
+                <span>
+                    Service Date
+                </span>
+            </div>
+            <div class="div-table-cell header">
+                <span>
+                    Payment
+                </span>
+            </div>
+            <div class="div-table-cell header">
+                <span>
+                    Status
+                </span>
+            </div>
+        </div>
+
+        <form method="post">
+            @for (int i = 0; i < Model.Payments.Count(); i++)
+            {
+                var payment = Model.Payments[i];
+                <div class="div-table-row">
+                    @* Necessary because MVC doesnt bind properly if not all model fields have an input binded to it.*@
+                    <input type="hidden" asp-for="Payments[i].Id" />
+                    <input type="hidden" asp-for="Payments[i].Patient.Id" />
+                    <input type="hidden" asp-for="Payments[i].Patient.FirstName" />
+                    <input type="hidden" asp-for="Payments[i].Patient.MiddleName" />
+                    <input type="hidden" asp-for="Payments[i].Patient.LastName" />
+                    <input type="hidden" asp-for="Payments[i].Patient.ContactNumber" />
+                    <input type="hidden" asp-for="Payments[i].ServiceDate" />
+                    <input type="hidden" asp-for="Payments[i].PaymentType" />
+                    <div class="div-table-cell">
+                        <span>
+                            @payment.Patient.Id
+                        </span>
+                    </div>
+                    <div class="div-table-cell">
+                        <span>
+                            @payment.Patient.FirstName
+                        </span>
+                    </div>
+                    <div class="div-table-cell">
+                        <span>
+                            @payment.Patient.MiddleName
+                        </span>
+                    </div>
+                    <div class="div-table-cell">
+                        <span>
+                            @payment.Patient.LastName
+                        </span>
+                    </div>
+                    <div class="div-table-cell">
+                        <span>
+                            @payment.Patient.ContactNumber
+                        </span>
+                    </div>
+                    <div class="div-table-cell">
+                        <span>
+                            @payment.ServiceDate
+                        </span>
+                    </div>
+                    <div class="div-table-cell">
+                        <span>
+                            @payment.PaymentType.ToString()
+                        </span>
+                    </div>
+                    <div class="div-table-cell">
+                        @* <span class="@(payment.PaymentStatus == PaymentStatus.Paid ? "paid" : "unpaid")">
+                    @payment.PaymentStatus.ToString()
+                    </span> *@
+
+                        <select asp-for="Payments[i].PaymentStatus" class="@(payment.PaymentStatus == PaymentStatus.Paid ? "paid" : "unpaid")" asp-items="Html.GetEnumSelectList<PaymentStatus>()">
+                            @*
+                        Html.GetEnumSelectList gets all the possible values <of></of>the enum and creates a select element with the options.
+                        <option value="Paid">Paid</option>
+                        <option value="Unpaid">Unpaid</option> *@
+                        </select>
+
+                    </div>
+                </div>
+            }
+
+            <button type="submit">Save</button>
+        </form>
+    </div>
+</div>
