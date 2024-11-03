@@ -61,6 +61,10 @@ public class MedicineRepository : IMedicineDatabaseRepository
 
         //}
 
+    public Medicine? GetById(int id)
+    {
+        return context.Medicines.Include(m => m.Supplier).FirstOrDefault(m => m.Id == id);
+    }
 
     }
     public IEnumerable<Medicine> GetAll()
