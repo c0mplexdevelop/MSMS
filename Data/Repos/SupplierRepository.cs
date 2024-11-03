@@ -10,11 +10,23 @@ public class SupplierRepository : IDatabaseRepository<Supplier>
     {
         this.context = context;
     }
+    public Supplier? GetById(int id)
+    {
         return context.Suppliers.Find(id);
     }
 
     public IEnumerable<Supplier> GetAll()
     {
         return [.. context.Suppliers];
+    }
+
+    public void SaveChanges()
+    {
+        context.SaveChanges();
+    }
+
+    public void Update(Supplier model)
+    {
+        context.Suppliers.Update(model);
     }
 }
