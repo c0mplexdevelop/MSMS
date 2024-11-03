@@ -46,10 +46,27 @@ public class DashboardController : Controller
         ViewBag.ActiveSection = "Inventory";
         return View(model);
     }
+
+    [HttpPost]
+    public IActionResult Inventory(string searchString)
         {
-            _logger.LogInformation(supplier.ToString());
+        var medicines = _medicineDb.GetAll();
+        var suppliers = _supplierDb.GetAll();
+
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            searchString = searchString.ToLower();
+            medicines = medicines.Where(medicine => medicine.GenericName.ToLower().Contains(searchString) ||
+                                                            medicine.BrandName.ToLower().Contains(searchString));
         }
-        ViewBag.ActiveSection = "Inventory";
+
+        var model = new CombinedMedicineSupplierModel
+        {
+            Medicines = medicines,
+            Suppliers = suppliers,
+            SearchString = searchString
+        };
+
         return View(model);
     }
 
