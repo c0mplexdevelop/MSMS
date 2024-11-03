@@ -2,12 +2,14 @@
 
 namespace MSMS.Data.Repos;
 
-public class SupplierRepository() : IDatabaseRepository<Supplier> 
+public class SupplierRepository : IDatabaseRepository<Supplier> 
 {
+    private readonly DatabaseContext context;
 
-    public Supplier GetById(int id)
+    public SupplierRepository(DatabaseContext context)
     {
-        using var context = new DatabaseContext();
+        this.context = context;
+    }
         return context.Suppliers.Find(id);
     }
 

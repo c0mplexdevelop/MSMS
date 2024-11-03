@@ -7,22 +7,12 @@ namespace MSMS.Data.Repos;
 public class UserRepository : IUserDatabaseRepository
 {
 
-    public UserRepository()
-    {
-        using var context = new DatabaseContext();
-        var users = new List<User> {
-                new() { Id = 1, Name = "John Doe", Username = "c0mplex", Password = "test123"},
-                new() { Id = 2, Name = "Jane Doe" }
-            };
+    private readonly DatabaseContext context;
 
-        if (context.Users.Any())
+    public UserRepository(DatabaseContext context)
         {
-            return;
+        this.context = context;
         }
-        context.Users.AddRange(users);
-        context.SaveChanges();
-    }
-
     public IEnumerable<User> GetAll()
     {
         using(var context = new DatabaseContext())
