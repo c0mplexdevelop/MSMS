@@ -10,13 +10,19 @@ public class DashboardController : Controller
     private ILogger<DashboardController> _logger;
 
     private IMedicineDatabaseRepository _medicineDb;
+    private IPaymentDatabaseRepository _paymentDb;
     private IDatabaseRepository<Supplier> _supplierDb;
+    private IPatientDatabaseRepository _patientDb;
 
-    public DashboardController(ILogger<DashboardController> logger, IMedicineDatabaseRepository medicineDb, IDatabaseRepository<Supplier> supplierDb)
+    public DashboardController( ILogger<DashboardController> logger, IMedicineDatabaseRepository medicineDb, 
+                                IDatabaseRepository<Supplier> supplierDb, IPaymentDatabaseRepository paymentDb,
+                                IPatientDatabaseRepository patientDb)
     {
         _logger = logger;
         _medicineDb = medicineDb;
         _supplierDb = supplierDb;
+        _paymentDb = paymentDb;
+        _patientDb = patientDb;
     }
 
     public IActionResult Notifications(User user)
