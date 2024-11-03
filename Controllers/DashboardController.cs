@@ -27,13 +27,25 @@ public class DashboardController : Controller
 
     public IActionResult Inventory(CombinedMedicineSupplierModel model)
     {
-        model.Medicines = _medicineDb.GetAll();
-        foreach(var medicine in model.Medicines)
+        model.SearchString = (ViewData["SearchString"] as string) ?? "";
+        var medicines = _medicineDb.GetAll();
+
+        
+
+        model.Medicines = medicines;
+        _logger.LogInformation(model.SearchString);
+        foreach (var medicine in model.Medicines)
         {
             _logger.LogInformation(medicine.ToString());
         }
 
-        foreach(var supplier in _supplierDb.GetAll())
+        //foreach (var supplier in _supplierDb.GetAll())
+        //{
+        //    _logger.LogInformation(supplier.ToString());
+        //}
+        ViewBag.ActiveSection = "Inventory";
+        return View(model);
+    }
         {
             _logger.LogInformation(supplier.ToString());
         }
