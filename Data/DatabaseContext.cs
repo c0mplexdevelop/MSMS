@@ -43,7 +43,8 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 GenericName = "Paracetamol",
                 Price = 10.00m,
                 Quantity = 100,
-                SupplierId = 1
+                SupplierId = 1,
+                ReorderLevel = 50
             },
 
             new Medicine
@@ -52,9 +53,9 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 GenericName = "Aspirin",
                 Price = 5.00m,
                 Quantity = 50,
-                SupplierId = 2
-            }
-        );
+                SupplierId = 2,
+                ReorderLevel = 75
+            });
 
         base.OnModelCreating(modelBuilder);
     }
