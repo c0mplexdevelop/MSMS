@@ -65,6 +65,10 @@ public class MedicineRepository : IMedicineDatabaseRepository
 
         //}
         //}
+    public IEnumerable<Medicine> GetAll()
+    {
+        return [.. context.Medicines.Include(m => m.Supplier)];
+    }
 
     public Medicine? GetById(int id)
     {
@@ -74,8 +78,8 @@ public class MedicineRepository : IMedicineDatabaseRepository
     }
     public IEnumerable<Medicine> GetAll()
     {
-        using var context = new DatabaseContext();
-        return [.. context.Medicines.Include(m => m.Supplier)];
+        return context.Medicines.Include(m => m.Supplier).Where(m => m.ExpiryDate == expiryDate);
+
     }
 
     public Medicine GetById(int id)

@@ -15,7 +15,6 @@ public class SupplierRepository : IDatabaseRepository<Supplier>
 
     public IEnumerable<Supplier> GetAll()
     {
-        using var context = new DatabaseContext();
         return [.. context.Suppliers];
     }
 }
