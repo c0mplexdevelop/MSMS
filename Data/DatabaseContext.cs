@@ -57,6 +57,56 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 ReorderLevel = 75
             });
 
+        modelBuilder.Entity<Patient>().HasData(
+            new Patient
+            {
+                Id = 1,
+                FirstName = "John",
+                MiddleName = "Doe",
+                LastName = "Smith",
+                ContactNumber = "1234567890"
+            },
+            new Patient
+            {
+                Id = 2,
+                FirstName = "Jane",
+                MiddleName = "Doe",
+                LastName = "Smith",
+                ContactNumber = "0987654321"
+            });
+
+        modelBuilder.Entity<Payment>().HasData(
+            new Payment
+            {
+                Id = 1,
+                PatientId = 1,
+                ServiceDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-1)),
+                PaymentType = PaymentType.Cash,
+                PaymentStatus = PaymentStatus.Paid
+            },
+            new Payment
+            {
+                Id = 2,
+                PatientId = 2,
+                ServiceDate = DateOnly.FromDateTime(DateTime.Now),
+                PaymentType = PaymentType.Cash,
+                PaymentStatus = PaymentStatus.Unpaid
+            });
+
+
+        modelBuilder.Entity<User>().HasData(
+            new() 
+            { 
+                Id = 1, 
+                Name = "John Doe", 
+                Username = "c0mplex", 
+                Password = "test123" 
+            },
+            new() { 
+                Id = 2, 
+                Name = "Jane Doe" 
+            });
+
         base.OnModelCreating(modelBuilder);
     }
 }
