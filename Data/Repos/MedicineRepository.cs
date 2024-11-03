@@ -5,29 +5,11 @@ namespace MSMS.Data.Repos;
 
 public class MedicineRepository : IMedicineDatabaseRepository
 {
-    public MedicineRepository()
-    {
-        using var context = new DatabaseContext();
+    private readonly DatabaseContext context;
 
-        var supplier1 = new Supplier
+    public MedicineRepository(DatabaseContext context)
         {
-            Id = 1,
-            Name = "Supplier 1",
-            Address = "Address 1",
-            ContactNumber = "1234567890"
-        };
-        var supplier2 = new Supplier
-        {
-            Id = 2,
-            Name = "Supplier 2",
-            Address = "Address 2",
-            ContactNumber = "0987654321"
-        };
-
-        if(!context.Suppliers.Any())
-        {
-            context.Suppliers.AddRange(supplier1, supplier2);
-            context.SaveChanges();
+        this.context = context;
         }
 
         var medicine1 = new Medicine
