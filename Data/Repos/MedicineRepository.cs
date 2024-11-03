@@ -8,9 +8,9 @@ public class MedicineRepository : IMedicineDatabaseRepository
     private readonly DatabaseContext context;
 
     public MedicineRepository(DatabaseContext context)
-        {
+    {
         this.context = context;
-        }
+    }
     //public MedicineRepository()
     //{
         //var supplier1 = new Supplier
@@ -51,7 +51,7 @@ public class MedicineRepository : IMedicineDatabaseRepository
         //    Quantity = 50,
         //    Supplier = supplier2
         //};
-        
+
 
         //if(!context.Medicines.Any())
         //{
@@ -75,20 +75,24 @@ public class MedicineRepository : IMedicineDatabaseRepository
         return context.Medicines.Include(m => m.Supplier).FirstOrDefault(m => m.Id == id);
     }
 
+    public IEnumerable<Medicine> GetExpiredMedicine()
+    {
+        return context.Medicines.Include(m => m.Supplier).Where(m => DateOnly.FromDateTime(DateTime.Now) > m.ExpiryDate);
     }
-    public IEnumerable<Medicine> GetAll()
+
+    public IEnumerable<Medicine> GetMedicineByExpiryDate(DateOnly expiryDate)
     {
         return context.Medicines.Include(m => m.Supplier).Where(m => m.ExpiryDate == expiryDate);
 
     }
 
-    public Medicine GetById(int id)
+    public void SaveChanges()
     {
-        throw new NotImplementedException();
+        context.SaveChanges();
     }
 
-    public Medicine GetExpiredMedicine(DateOnly expiryDate)
+    public void Update(Medicine model)
     {
-        throw new NotImplementedException();
+        context.Medicines.Update(model);
     }
 }

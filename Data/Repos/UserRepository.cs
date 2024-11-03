@@ -10,9 +10,9 @@ public class UserRepository : IUserDatabaseRepository
     private readonly DatabaseContext context;
 
     public UserRepository(DatabaseContext context)
-        {
+    {
         this.context = context;
-        }
+    }
     public IEnumerable<User> GetAll()
     {
         {
@@ -28,5 +28,15 @@ public class UserRepository : IUserDatabaseRepository
     public User GetById(int id)
     {
         throw new NotImplementedException();
+    }
+
+    public void SaveChanges()
+    {
+        context.SaveChanges();
+    }
+
+    public void Update(User model)
+    {
+        context.Users.Update(model);
     }
 }
