@@ -17,3 +17,23 @@ html, body {
 .text-danger {
 	color: red !important;
 }
+
+.max-w {
+	width: 100%;
+}
+
+.search-bar {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 1.5rem;
+}
+
+.input-search {
+	border: none;
+	width: 100%;
+}
+
+	.input-search:focus {
+		outline: none;
+	}
