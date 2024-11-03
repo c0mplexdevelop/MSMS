@@ -31,6 +31,7 @@ public class LoginController : Controller
         var queriedUser = _userRepository.GetByCredential(model);
         _logger.LogInformation(model.ToString());
         _logger.LogDebug(queriedUser?.ToString());
+        _logger.LogInformation(queriedUser is null ? "No queried User" : queriedUser.ToString());
         if (queriedUser is null)
         {
             return View(model);
