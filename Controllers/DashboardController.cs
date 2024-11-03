@@ -56,7 +56,7 @@ public class DashboardController : Controller
 
     [HttpPost]
     public IActionResult Inventory(string searchString)
-        {
+    {
         var medicines = _medicineDb.GetAll();
         var suppliers = _supplierDb.GetAll();
 
