@@ -2,6 +2,7 @@
 using MSMS.Models.Login;
 using MSMS.Models.Dashboard;
 using MSMS.Models.MedicineInventory;
+using MSMS.Models.Payments;
 
 namespace MSMS.Data;
 
@@ -10,6 +11,8 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
 
     public DbSet<Medicine> Medicines { get; set; }
     public DbSet<Supplier> Suppliers { get; set; }
+    public DbSet<Patient> Patients { get; set; }
+    public DbSet<Payment> Payments { get; set; }
     public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
