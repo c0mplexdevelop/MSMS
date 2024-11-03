@@ -13,3 +13,7 @@ html, body {
 	justify-content: center;
 	align-items: center;
 }
+
+.text-danger {
+	color: red !important;
+}

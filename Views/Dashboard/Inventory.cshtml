@@ -50,7 +50,7 @@
         </div>
         @foreach(var medicine in Model.Medicines)
         {
-            <div class="div-table-row">
+            <div class="div-table-row @(medicine.Quantity <= medicine.ReorderLevel ? "text-danger" : "")">
                 <div class="div-table-cell">
                     <span>@medicine.Id</span>
                 </div>
