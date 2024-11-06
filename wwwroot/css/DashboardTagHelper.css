@@ -40,3 +40,10 @@
 .inventory-form input[type=text] {
 	flex: 1;
 }
+
+#main-form {
+	display: table-cell;
+	-webkit-column-span: inherit;
+	column-span: all;
+	width: 100%;
+}

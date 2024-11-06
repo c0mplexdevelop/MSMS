@@ -1,4 +1,4 @@
-﻿using MSMS.Models.Payments;
+﻿using MSMS.Models.Procedures;
 
 namespace MSMS.Data.Repos;
 
@@ -9,6 +9,12 @@ public class PatientRepository : IPatientDatabaseRepository
     {
         this.context = context;
     }
+
+    public void Add(Patient model)
+    {
+        throw new NotImplementedException();
+    }
+
     public IEnumerable<Patient> GetAll()
     {
         return [.. context.Patients];
@@ -24,6 +30,11 @@ public class PatientRepository : IPatientDatabaseRepository
         return context.Patients.Find(id);
     }
 
+    public Patient? GetByIdWithNoTracking(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public IEnumerable<Patient> GetByLastName(string lastName)
     {
         return context.Patients.Where(context => context.LastName == lastName);
@@ -34,9 +45,9 @@ public class PatientRepository : IPatientDatabaseRepository
         context.SaveChanges();
     }
 
-    public void Update(Patient model)
+    public void UpdateExisitngModel(Patient model)
     {
-        context.Patients.Update(model);
+        
     }
 
 

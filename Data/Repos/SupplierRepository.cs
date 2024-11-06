@@ -2,7 +2,7 @@
 
 namespace MSMS.Data.Repos;
 
-public class SupplierRepository : IDatabaseRepository<Supplier> 
+public class SupplierRepository : IDatabaseRepository<Supplier>
 {
     private readonly DatabaseContext context;
 
@@ -25,8 +25,18 @@ public class SupplierRepository : IDatabaseRepository<Supplier>
         context.SaveChanges();
     }
 
-    public void Update(Supplier model)
+    public void UpdateExisitngModel(Supplier model)
     {
         context.Suppliers.Update(model);
+    }
+
+    public void Add(Supplier model)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Supplier? GetByIdWithNoTracking(int id)
+    {
+        throw new NotImplementedException();
     }
 }

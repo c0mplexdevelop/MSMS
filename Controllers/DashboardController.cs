@@ -2,7 +2,7 @@
 using MSMS.Data.Repos;
 using MSMS.Models.Dashboard;
 using MSMS.Models.MedicineInventory;
-using MSMS.Models.Payments;
+using MSMS.Models.Procedures;
 
 namespace MSMS.Controllers;
 
@@ -11,18 +11,18 @@ public class DashboardController : Controller
     private ILogger<DashboardController> _logger;
 
     private IMedicineDatabaseRepository _medicineDb;
-    private IPaymentDatabaseRepository _paymentDb;
+    private IProcedureDatabaseRepository _procedureDb;
     private IDatabaseRepository<Supplier> _supplierDb;
     private IPatientDatabaseRepository _patientDb;
 
-    public DashboardController( ILogger<DashboardController> logger, IMedicineDatabaseRepository medicineDb, 
-                                IDatabaseRepository<Supplier> supplierDb, IPaymentDatabaseRepository paymentDb,
+    public DashboardController(ILogger<DashboardController> logger, IMedicineDatabaseRepository medicineDb,
+                                IDatabaseRepository<Supplier> supplierDb, IProcedureDatabaseRepository paymentDb,
                                 IPatientDatabaseRepository patientDb)
     {
         _logger = logger;
         _medicineDb = medicineDb;
         _supplierDb = supplierDb;
-        _paymentDb = paymentDb;
+        _procedureDb = paymentDb;
         _patientDb = patientDb;
     }
 
@@ -37,7 +37,7 @@ public class DashboardController : Controller
         model.SearchString = (ViewData["SearchString"] as string) ?? "";
         var medicines = _medicineDb.GetAll();
 
-        
+
 
         model.Medicines = medicines;
         _logger.LogInformation(model.SearchString);
@@ -59,6 +59,8 @@ public class DashboardController : Controller
     {
         var medicines = _medicineDb.GetAll();
         var suppliers = _supplierDb.GetAll();
+
+        _logger.LogInformation(searchString);
 
         if (!string.IsNullOrEmpty(searchString))
         {
@@ -90,11 +92,11 @@ public class DashboardController : Controller
     }
 
     [HttpGet]
-    public IActionResult Payments()
+    public IActionResult Procedures()
     {
-        ViewBag.ActiveSection = "Payments";
-        var model = new PaymentsViewModel();
-        var payments = _paymentDb.GetAll();
+        ViewBag.ActiveSection = "Procedures";
+        var model = new ProceduresViewModel();
+        var payments = _procedureDb.GetAll();
         var patients = _patientDb.GetAll();
         if (!payments.Any())
         {
@@ -104,17 +106,17 @@ public class DashboardController : Controller
         {
             _logger.LogInformation(payment.ToString() ?? "null");
         }
-        model.Payments = payments.ToList();
+        model.Procedures = payments.ToList();
         model.Patients = patients.ToList();
-        _logger.LogInformation($"{model.Payments.Count}");
+        _logger.LogInformation($"{model.Procedures.Count}");
         return View(model);
     }
 
     [HttpPost]
-    public IActionResult Payments(PaymentsViewModel model)
+    public IActionResult Procedures(ProceduresViewModel model)
     {
         _logger.LogInformation($"{model is null}");
-        _logger.LogInformation($"{model?.Payments is null}");
+        _logger.LogInformation($"{model?.Procedures is null}");
         //if (!ModelState.IsValid)
         //{
         //    model = new PaymentsViewModel
@@ -125,13 +127,70 @@ public class DashboardController : Controller
         //    _logger.LogInformation("Model state is invalid");
         //    return View("Payments", model);
         //}
-        foreach (var payment in model.Payments)
-        {
-            _logger.LogInformation($"{payment.PaymentStatus.ToString()}");
-            _paymentDb.Update(payment);
-        }
-        _paymentDb.SaveChanges();
-        _logger.LogInformation($"{model.Payments[0].PaymentStatus.ToString()}");
+        //foreach (var payment in model.Procedures)
+        //{
+        //    //_logger.LogInformation($"{payment.PaymentStatus.ToString()}");
+        //    _procedureDb.Update(payment);
+        //}
+        _procedureDb.SaveChanges();
+        //_logger.LogInformation($"{model.Procedures[0].PaymentStatus.ToString()}");
         return View(model);
+    }
+
+    [HttpPost]
+    public IActionResult AddProcedure(int addAmount)
+    {
+        var patients = _patientDb.GetAll();
+        var procedures = _procedureDb.GetAll().ToList();
+        int lastId = procedures[procedures.Count() - 1].Id;
+
+
+        if (addAmount <= 1)
+        {
+            procedures.Add(new Procedure
+            {
+                Id = lastId + 1
+            });
+        }
+        else
+        {
+            for (int i = 0; i < addAmount; i++)
+            {
+                procedures.Add(new Procedure
+                {
+                    Id = lastId + 1
+                });
+                lastId++;
+            }
+        }
+
+        _logger.LogInformation(addAmount.ToString() ?? "null");
+
+        var model = new ProceduresViewModel
+        {
+            Patients = patients.ToList(),
+            Procedures = procedures
+        };
+        return View("Procedures", model);
+    }
+
+    [HttpPost]
+    public IActionResult SaveProcedures(ProceduresViewModel model)
+    {
+        var procedures = _procedureDb.GetAll().ToList();
+        foreach (var procedure in model.Procedures)
+        {
+            if(_procedureDb.GetById(procedure.Id) != null)
+            {
+                _procedureDb.UpdateExisitngModel(procedure);
+                continue;
+            }
+
+            _procedureDb.Add(procedure);
+        }
+
+        _procedureDb.SaveChanges();
+
+        return View("Procedures", model);
     }
 }

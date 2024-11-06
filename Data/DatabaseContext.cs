@@ -3,6 +3,7 @@ using MSMS.Models.Login;
 using MSMS.Models.Dashboard;
 using MSMS.Models.MedicineInventory;
 using MSMS.Models.Payments;
+using MSMS.Models.Procedures;
 
 namespace MSMS.Data;
 
@@ -12,7 +13,8 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
     public DbSet<Medicine> Medicines { get; set; }
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<Patient> Patients { get; set; }
-    public DbSet<Payment> Payments { get; set; }
+    public DbSet<Procedure> Procedure { get; set; }
+    public DbSet<ActiveProcedure> PatientProcedures { get; set; }
     public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -75,36 +77,36 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 ContactNumber = "0987654321"
             });
 
-        modelBuilder.Entity<Payment>().HasData(
-            new Payment
+        modelBuilder.Entity<Procedure>().HasData(
+            new Procedure
             {
                 Id = 1,
-                PatientId = 1,
-                ServiceDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-1)),
-                PaymentType = PaymentType.Cash,
-                PaymentStatus = PaymentStatus.Paid
+                ProcedureName = "Blood Test",
+                ProcedureDescription = "Blood Test Duh",
+                ProcedurePrice = 100.00m,
+                ProcedureNotes = "Disposable Syringe"
             },
-            new Payment
+            new Procedure
             {
                 Id = 2,
-                PatientId = 2,
-                ServiceDate = DateOnly.FromDateTime(DateTime.Now),
-                PaymentType = PaymentType.Cash,
-                PaymentStatus = PaymentStatus.Unpaid
+                ProcedureName = "Urinalysis",
+                ProcedureDescription = "Analyze patient urine for bacteria or unbalanced electrolyte level.",
+                ProcedurePrice = 100.00m,
+                ProcedureNotes = "Make Patient drink water till they excrete."
             });
 
 
         modelBuilder.Entity<User>().HasData(
-            new() 
-            { 
-                Id = 1, 
-                Name = "John Doe", 
-                Username = "c0mplex", 
-                Password = "test123" 
+            new()
+            {
+                Id = 1,
+                Name = "John Doe",
+                Username = "c0mplex",
+                Password = "test123"
             },
-            new() { 
-                Id = 2, 
-                Name = "Jane Doe" 
+            new() {
+                Id = 2,
+                Name = "Jane Doe"
             });
 
         base.OnModelCreating(modelBuilder);

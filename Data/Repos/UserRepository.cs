@@ -13,6 +13,12 @@ public class UserRepository : IUserDatabaseRepository
     {
         this.context = context;
     }
+
+    public void Add(User model)
+    {
+        throw new NotImplementedException();
+    }
+
     public IEnumerable<User> GetAll()
     {
         {
@@ -30,12 +36,17 @@ public class UserRepository : IUserDatabaseRepository
         throw new NotImplementedException();
     }
 
+    public User? GetByIdWithNoTracking(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public void SaveChanges()
     {
         context.SaveChanges();
     }
 
-    public void Update(User model)
+    public void UpdateExisitngModel(User model)
     {
         context.Users.Update(model);
     }
