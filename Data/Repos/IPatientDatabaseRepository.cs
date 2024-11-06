@@ -1,4 +1,4 @@
-﻿using MSMS.Models.Payments;
+﻿using MSMS.Models.Procedures;
 
 namespace MSMS.Data.Repos;
 
