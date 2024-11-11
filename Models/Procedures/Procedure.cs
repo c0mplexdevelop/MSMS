@@ -17,4 +17,33 @@ public class Procedure
     // Navigation properties (foreign keys)
     //public int PatientId { get; set; }
     //public Patient Patient { get; set; } = null!;
+
+    public static bool operator ==(Procedure left, Procedure right)
+    {
+        if(ReferenceEquals(left, right)) return true;
+        if (left is null || right is null) return false;
+
+        return left.Id == right.Id && 
+            left.ProcedureName == right.ProcedureName && 
+            left.ProcedurePrice == right.ProcedurePrice && 
+            left.ProcedureDescription == right.ProcedureDescription &&
+            left.ProcedureNotes == right.ProcedureNotes;
+            
+    }
+
+    public static bool operator !=(Procedure left, Procedure right) => !(left == right);
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is Procedure procedure)
+        {
+            return this == procedure;
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return Id.GetHashCode();
+    }
 }
