@@ -6,12 +6,18 @@ using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 
+var dbServerVersion = new MySqlServerVersion(new Version(8, 0, 29));
 builder.Services.AddDbContext<DatabaseContext>(
-    options => options.UseInMemoryDatabase("MSMS").EnableSensitiveDataLogging());
+    options => options.UseInMemoryDatabase("MSMS").EnableSensitiveDataLogging()
+    //options => options.UseMySql(connectionString, dbServerVersion).EnableSensitiveDataLogging()
+    );
+
 
 builder.Services.AddScoped<IUserDatabaseRepository, UserRepository>();
 builder.Services.AddScoped<IMedicineDatabaseRepository, MedicineRepository>();
