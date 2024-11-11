@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MSMS.Data;
 using MSMS.Data.Repos;
 using MSMS.Models.MedicineInventory;
-using System;
+using MSMS.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +25,8 @@ builder.Services.AddScoped<IMedicineDatabaseRepository, MedicineRepository>();
 builder.Services.AddScoped<IDatabaseRepository<Supplier>, SupplierRepository>();
 builder.Services.AddScoped<IPatientDatabaseRepository, PatientRepository>();
 builder.Services.AddScoped<IProcedureDatabaseRepository, ProcedureRepository>();
+builder.Services.AddScoped<INotificationDatabaseRepository, NotificationRepository>();
+builder.Services.AddScoped<NotificationService>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).
     AddCookie(options =>
     {
