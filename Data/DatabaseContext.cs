@@ -4,6 +4,8 @@ using MSMS.Models.Dashboard;
 using MSMS.Models.MedicineInventory;
 using MSMS.Models.Payments;
 using MSMS.Models.Procedures;
+using MSMS.Auth;
+using MSMS.Models.Notification;
 
 namespace MSMS.Data;
 
@@ -107,6 +109,14 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
             new() {
                 Id = 2,
                 Name = "Jane Doe"
+        modelBuilder.Entity<Notification>().HasData(
+            new Notification
+            {
+                Id = 1,
+                UserId = 1,
+                Message = "Hello, World!",
+                CreatedAt = DateOnly.FromDateTime(DateTime.Now)
+
             });
 
         base.OnModelCreating(modelBuilder);
