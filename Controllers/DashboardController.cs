@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MSMS.Data.Repos;
 using MSMS.Models.Dashboard;
 using MSMS.Models.MedicineInventory;
+using MSMS.Models.Notification;
 using MSMS.Models.Procedures;
+using MSMS.Services;
 
 namespace MSMS.Controllers;
 
@@ -15,16 +18,23 @@ public class DashboardController : Controller
     private readonly IProcedureDatabaseRepository _procedureDb;
     private readonly IDatabaseRepository<Supplier> _supplierDb;
     private readonly IPatientDatabaseRepository _patientDb;
+    private readonly INotificationDatabaseRepository _notificationDb;
+    private readonly NotificationService _notificationService;
+    private readonly UserService _userService;
 
     public DashboardController(ILogger<DashboardController> logger, IMedicineDatabaseRepository medicineDb,
                                 IDatabaseRepository<Supplier> supplierDb, IProcedureDatabaseRepository paymentDb,
-                                IPatientDatabaseRepository patientDb)
+                                IPatientDatabaseRepository patientDb, INotificationDatabaseRepository notificationDb,
+                                NotificationService notificationService, UserService userService)
     {
         _logger = logger;
         _medicineDb = medicineDb;
         _supplierDb = supplierDb;
         _procedureDb = paymentDb;
         _patientDb = patientDb;
+        _notificationDb = notificationDb;
+        _notificationService = notificationService;
+        _userService = userService;
     }
 
     public IActionResult Notifications(User user)
