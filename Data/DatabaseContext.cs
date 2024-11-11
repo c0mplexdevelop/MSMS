@@ -2,7 +2,6 @@
 using MSMS.Models.Login;
 using MSMS.Models.Dashboard;
 using MSMS.Models.MedicineInventory;
-using MSMS.Models.Payments;
 using MSMS.Models.Procedures;
 using MSMS.Auth;
 using MSMS.Models.Notification;
