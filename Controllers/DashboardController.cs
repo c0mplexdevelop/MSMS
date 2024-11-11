@@ -221,7 +221,19 @@ public class DashboardController : Controller
                 continue;
             }
 
-            _procedureDb.Add(procedure);
+
+            var title = "Procedure";
+            var stringMessage = @$"""
+                UPDATED:    {existingModel.ProcedureName} -> {procedure.ProcedureName}
+                            {existingModel.ProcedurePrice} -> {procedure.ProcedurePrice}
+                            {existingModel.ProcedureDescription} -> {procedure.ProcedureDescription}
+                            {existingModel.ProcedureNotes} -> {procedure.ProcedureNotes}
+            """;
+            
+            _notificationService.Add(title, stringMessage, NotificationReference.Procedures, _userService.GetUser());
+
+            _procedureDb.UpdateExisitngModel(procedure);
+            continue;
         }
 
         _procedureDb.SaveChanges();
