@@ -1,3 +1,4 @@
+﻿using MSMS.Auth;
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace MSMS.Models.Dashboard;
