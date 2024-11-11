@@ -80,6 +80,8 @@ public class DashboardController : Controller
         var medicines = _medicineDb.GetAll();
         var suppliers = _supplierDb.GetAll();
 
+        ViewData["SearchString"] = searchString;
+
         _logger.LogInformation(searchString);
 
         if (!string.IsNullOrEmpty(searchString))
