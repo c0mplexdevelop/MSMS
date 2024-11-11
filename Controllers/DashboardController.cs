@@ -6,6 +6,7 @@ using MSMS.Models.Procedures;
 
 namespace MSMS.Controllers;
 
+[Authorize]
 public class DashboardController : Controller
 {
     private ILogger<DashboardController> _logger;
@@ -31,6 +32,8 @@ public class DashboardController : Controller
         ViewBag.ActiveSection = "Notifications";
         return View(user);
     }
+
+    [Authorize(Roles = "Staff, Admin")]
 
     public IActionResult Inventory(CombinedMedicineSupplierModel model)
     {
