@@ -196,6 +196,9 @@ public class DashboardController : Controller
                 _procedureDb.Add(procedure);
                 continue;
             }
+
+            if (existingModel == procedure)
+            {
                 continue;
             }
 
