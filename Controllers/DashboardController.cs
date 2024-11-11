@@ -116,28 +116,22 @@ public class DashboardController : Controller
     }
 
     [HttpPost]
-    public IActionResult Procedures(ProceduresViewModel model)
+    public IActionResult SearchProcedures(string searchString)
     {
-        _logger.LogInformation($"{model is null}");
-        _logger.LogInformation($"{model?.Procedures is null}");
-        //if (!ModelState.IsValid)
-        //{
-        //    model = new PaymentsViewModel
-        //    {
-        //        Payments = payments.ToList()
-        //    };
+        ViewData["SearchString"] = searchString;
+        var procedures = _procedureDb.GetAll();
 
-        //    _logger.LogInformation("Model state is invalid");
-        //    return View("Payments", model);
-        //}
-        //foreach (var payment in model.Procedures)
-        //{
-        //    //_logger.LogInformation($"{payment.PaymentStatus.ToString()}");
-        //    _procedureDb.Update(payment);
-        //}
-        _procedureDb.SaveChanges();
-        //_logger.LogInformation($"{model.Procedures[0].PaymentStatus.ToString()}");
-        return View(model);
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            searchString = searchString.ToLower();
+            procedures = procedures.Where(prod => prod.ProcedureName.ToLower() == searchString || prod.ProcedurePrice == Decimal.Parse(searchString));
+        }
+
+        var model = new ProceduresViewModel
+        {
+            Procedures = procedures.ToList()
+        };
+        return View("Procedures", model);
     }
 
     [HttpPost]
