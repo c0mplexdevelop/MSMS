@@ -23,6 +23,9 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Medicine>().HasOne(m => m.Supplier).WithMany(supplier => supplier.Medicines).HasForeignKey(m => m.SupplierId);
+        modelBuilder.Entity<Notification>().HasOne(n => n.User).WithMany().HasForeignKey(n => n.UserId);
+
+        modelBuilder.Entity<Notification>().Property(entity => entity.Id).ValueGeneratedOnAdd();
 
         modelBuilder.Entity<Supplier>().HasData(
             new Supplier
