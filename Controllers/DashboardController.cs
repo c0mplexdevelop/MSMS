@@ -37,7 +37,8 @@ public class DashboardController : Controller
         _userService = userService;
     }
 
-    public IActionResult Notifications(User user)
+    [HttpGet]
+    public IActionResult Notifications()
     {
         ViewBag.ActiveSection = "Notifications";
 
