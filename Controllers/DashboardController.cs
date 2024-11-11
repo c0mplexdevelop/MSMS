@@ -171,6 +171,19 @@ public class DashboardController : Controller
         return View("Procedures", model);
     }
 
+    [HttpGet]
+    public IActionResult EditProcedures()
+    {
+        var model = new ProceduresViewModel();
+        var procedures = _procedureDb.GetAll();
+        var patients = _patientDb.GetAll();
+
+        model.Procedures = procedures.ToList();
+        model.Patients = patients.ToList();
+
+        return View(model);
+    }
+
     [HttpPost]
     public IActionResult SaveProcedures(ProceduresViewModel model)
     {
