@@ -16,7 +16,6 @@
 	"menu main main main"
 	"menu main main main";
 
-
 }
 
 .nav-bar {
@@ -55,9 +54,15 @@
 
 
 .main {
+	width: 100%;
+	justify-self: center;
 	grid-area: main;
-
 	margin-top: 1.2rem;
 	margin-right: 1.2rem;
 	background-color: white;
+
+	display: flex;
+	justify-content: center;
+
+	overflow-y: auto;
 }
