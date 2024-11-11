@@ -40,7 +40,13 @@ public class DashboardController : Controller
     public IActionResult Notifications(User user)
     {
         ViewBag.ActiveSection = "Notifications";
-        return View(user);
+
+        var notifications = _notificationDb.GetAll().OrderByDescending(notif => notif.Id);
+        var model = new NotificationViewModel
+        {
+            Notifications = notifications
+        };
+        return View(model);
     }
 
     [Authorize(Roles = "Staff, Admin")]
