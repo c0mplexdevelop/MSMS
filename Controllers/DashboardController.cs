@@ -190,9 +190,12 @@ public class DashboardController : Controller
         var procedures = _procedureDb.GetAll().ToList();
         foreach (var procedure in model.Procedures)
         {
-            if(_procedureDb.GetById(procedure.Id) != null)
+            Procedure? existingModel;
+            if ((existingModel = _procedureDb.GetById(procedure.Id)) is null)
             {
-                _procedureDb.UpdateExisitngModel(procedure);
+                _procedureDb.Add(procedure);
+                continue;
+            }
                 continue;
             }
 
