@@ -17,6 +17,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
     public DbSet<Patient> Patients { get; set; }
     public DbSet<Procedure> Procedure { get; set; }
     public DbSet<ActiveProcedure> PatientProcedures { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
     public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
