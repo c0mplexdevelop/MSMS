@@ -11,10 +11,10 @@ public class DashboardController : Controller
 {
     private ILogger<DashboardController> _logger;
 
-    private IMedicineDatabaseRepository _medicineDb;
-    private IProcedureDatabaseRepository _procedureDb;
-    private IDatabaseRepository<Supplier> _supplierDb;
-    private IPatientDatabaseRepository _patientDb;
+    private readonly IMedicineDatabaseRepository _medicineDb;
+    private readonly IProcedureDatabaseRepository _procedureDb;
+    private readonly IDatabaseRepository<Supplier> _supplierDb;
+    private readonly IPatientDatabaseRepository _patientDb;
 
     public DashboardController(ILogger<DashboardController> logger, IMedicineDatabaseRepository medicineDb,
                                 IDatabaseRepository<Supplier> supplierDb, IProcedureDatabaseRepository paymentDb,
