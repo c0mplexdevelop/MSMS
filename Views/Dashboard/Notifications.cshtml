@@ -1,6 +1,58 @@
-﻿@model MSMS.Models.Dashboard.User
+﻿@using Microsoft.AspNetCore.Authorization
+@using System.Security.Claims
+@using MSMS.Models.Notification
+
 @{
     ViewData["Title"] = "Dashboard";
 }
 
+@model MSMS.Models.Notification.NotificationViewModel
 
+<div class="container">
+    @foreach (var notification in Model.Notifications)
+    {
+        var referenceLocation = notification.ReferenceType;
+        <div class="notification-body">
+            <div class="notification-container">
+
+                <div class="reference-location">
+                    @switch (referenceLocation)
+                    {
+                        case NotificationReference.Inventory:
+                        case NotificationReference.Procedures:
+                            <img class="notification-image" src='~/images/Dashboard/Second-menu-item-firstimg.svg' alt=''>
+                            <img class="notification-image" src='~/images/Dashboard/Second-menu-item-secondimg.svg' alt=''>
+                            break;
+
+
+                    }
+                    <span class="reference-text">
+                        @referenceLocation.ToString()
+                    </span>
+                </div>
+
+                <div class="service-container">
+                    @* @if(User.IsInRole("Admin"))
+                    { *@
+                    <div class="user-name">
+                        User: @notification.User.Name
+                    </div>
+                    @* } *@
+
+
+                    <div class="service-date">
+                        @notification.CreatedAt
+                    </div>
+                </div>
+
+                <div class="message-container">
+                    <span>
+                        @notification.Message
+                    </span>
+                </div>
+
+
+            </div>
+        </div>
+    }
+</div>
