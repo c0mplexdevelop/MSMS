@@ -27,6 +27,11 @@ builder.Services.AddScoped<IPatientDatabaseRepository, PatientRepository>();
 builder.Services.AddScoped<IProcedureDatabaseRepository, ProcedureRepository>();
 builder.Services.AddScoped<INotificationDatabaseRepository, NotificationRepository>();
 builder.Services.AddScoped<NotificationService>();
+builder.Services.AddScoped<UserService>();
+
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).
     AddCookie(options =>
     {
