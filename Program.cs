@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using MSMS.Data;
 using MSMS.Data.Repos;
@@ -24,6 +25,24 @@ builder.Services.AddScoped<IMedicineDatabaseRepository, MedicineRepository>();
 builder.Services.AddScoped<IDatabaseRepository<Supplier>, SupplierRepository>();
 builder.Services.AddScoped<IPatientDatabaseRepository, PatientRepository>();
 builder.Services.AddScoped<IProcedureDatabaseRepository, ProcedureRepository>();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).
+    AddCookie(options =>
+    {
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+        options.SlidingExpiration = true;
+        options.LoginPath = "/Login/Login";
+        options.AccessDeniedPath = "/Dashboard/AccessDenied";
+    });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("Staff", policy => policy.RequireAssertion(context => context.User.IsInRole("Admin") || context.User.IsInRole("Staff")));
+    options.AddPolicy("Doctor", policy => policy.RequireAssertion(context => context.User.IsInRole("Admin") || context.User.IsInRole("Doctor")));
+
+
+
+});
 
 var app = builder.Build();
 
@@ -57,6 +76,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseSession();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

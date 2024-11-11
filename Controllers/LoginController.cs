@@ -20,15 +20,17 @@ public class LoginController : Controller
     }
 
     [HttpGet]
-    public IActionResult Login()
+    public async Task<IActionResult> Login()
     {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return View();
     }
         
     [HttpPost]
-    public IActionResult Login(UserCredential model)
+    public async Task<IActionResult> Login(UserCredential model)
     {
         var queriedUser = _userRepository.GetByCredential(model);
+        
         _logger.LogInformation(model.ToString());
         _logger.LogDebug(queriedUser?.ToString());
         _logger.LogInformation(queriedUser is null ? "No queried User" : queriedUser.ToString());
@@ -36,6 +38,29 @@ public class LoginController : Controller
         {
             return View(model);
         }
+
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, queriedUser!.Username),
+            new Claim(ClaimTypes.Role, queriedUser!.Role.ToString())
+        };
+
+        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+        var authProperties = new AuthenticationProperties
+        {
+            AllowRefresh = true,
+            IsPersistent = true,
+            IssuedUtc = DateTimeOffset.UtcNow
+        };
+
+        _logger.LogInformation(queriedUser.Role.ToString());
+        await HttpContext.SignInAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            new ClaimsPrincipal(claimsIdentity),
+            authProperties);
+
+        _userService.SetUser(queriedUser);
 
         return RedirectToAction("Notifications", "Dashboard", queriedUser);
     }
