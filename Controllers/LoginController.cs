@@ -1,9 +1,13 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using MSMS.Data.Repos;
 using MSMS.Models;
 using MSMS.Models.Dashboard;
 using MSMS.Models.Login;
+using MSMS.Services;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace MSMS.Controllers;
 
@@ -11,12 +15,14 @@ public class LoginController : Controller
 {
     private readonly ILogger<LoginController> _logger;
 
-    private IUserDatabaseRepository _userRepository;
+    private readonly IUserDatabaseRepository _userRepository;
+    private readonly UserService _userService;
 
-    public LoginController(ILogger<LoginController> logger, IUserDatabaseRepository databaseRepository)
+    public LoginController(ILogger<LoginController> logger, IUserDatabaseRepository databaseRepository, UserService userService)
     {
         _logger = logger;
         _userRepository = databaseRepository;
+        _userService = userService;
     }
 
     [HttpGet]
