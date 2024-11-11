@@ -209,4 +209,9 @@ public class DashboardController : Controller
 
         return View("Procedures", model);
     }
+
+    public IActionResult AccessDenied()
+    {
+        return View();
+    }
 }
