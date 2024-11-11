@@ -108,11 +108,17 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 Id = 1,
                 Name = "John Doe",
                 Username = "c0mplex",
-                Password = "test123"
+                Password = "test123",
+                Role = UserRole.Admin
             },
             new() {
                 Id = 2,
-                Name = "Jane Doe"
+                Name = "Jane Doe",
+                Username = "test",
+                Password = "test123",
+                Role = UserRole.Guest
+            });
+
         modelBuilder.Entity<Notification>().HasData(
             new Notification
             {
