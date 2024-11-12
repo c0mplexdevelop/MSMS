@@ -28,7 +28,7 @@ public class UserRepository : IUserDatabaseRepository
 
     public User? GetByCredential(UserCredential userCredential)
     {
-        return context.Users.FirstOrDefault(u => u.Username == userCredential.Username && u.Password == userCredential.Password);
+        return context.Users.Where(user => user.Username == userCredential.Username && user.Password == userCredential.Password).AsNoTracking().FirstOrDefault();
     }
 
     public User GetById(int id)

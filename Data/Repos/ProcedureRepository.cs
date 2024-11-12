@@ -29,7 +29,16 @@ public class ProcedureRepository : IProcedureDatabaseRepository
 
     public IEnumerable<ActiveProcedure?> GetAllProceduresOfPatient(Patient patient)
     {
-        return context.PatientProcedures.Where(ap => ap.Patient.Id == patient.Id);
+        return context.ActiveProcedures.Include(ap => ap.Procedure)
+            .Include(ap => ap.Patient)
+            .Where(ap => ap.Patient.Id == patient.Id);
+    }
+
+    public IEnumerable<ActiveProcedure?> GetAllPatientsOfProcedure(Procedure procedure)
+    {
+        return context.ActiveProcedures.Include(ap => ap.Procedure)
+            .Include(ap=> ap.Patient)
+            .Where(p => p.ProcedureId == procedure.Id);
     }
 
     public Procedure? GetById(int id)
@@ -58,6 +67,11 @@ public class ProcedureRepository : IProcedureDatabaseRepository
         
     }
 
+    public IEnumerable<ActiveProcedure> GetAllActiveProcedures()
+    {
+        return context.ActiveProcedures.Include(ap => ap.Procedure)
+            .Include(ap => ap.Patient);
+    }
 }
 
     

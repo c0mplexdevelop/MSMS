@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MSMS.Data.Repos;
 using MSMS.Models.Dashboard;
 using MSMS.Models.MedicineInventory;
@@ -19,13 +20,15 @@ public class DashboardController : Controller
     private readonly IDatabaseRepository<Supplier> _supplierDb;
     private readonly IPatientDatabaseRepository _patientDb;
     private readonly INotificationDatabaseRepository _notificationDb;
+    private readonly IActiveProcedureDatabaseRepository _activeProcedureDb;
     private readonly NotificationService _notificationService;
     private readonly UserService _userService;
 
     public DashboardController(ILogger<DashboardController> logger, IMedicineDatabaseRepository medicineDb,
                                 IDatabaseRepository<Supplier> supplierDb, IProcedureDatabaseRepository paymentDb,
                                 IPatientDatabaseRepository patientDb, INotificationDatabaseRepository notificationDb,
-                                NotificationService notificationService, UserService userService)
+                                IActiveProcedureDatabaseRepository activeProcedureDb, NotificationService notificationService, 
+                                UserService userService)
     {
         _logger = logger;
         _medicineDb = medicineDb;
@@ -33,6 +36,7 @@ public class DashboardController : Controller
         _procedureDb = paymentDb;
         _patientDb = patientDb;
         _notificationDb = notificationDb;
+        _activeProcedureDb = activeProcedureDb;
         _notificationService = notificationService;
         _userService = userService;
     }
@@ -43,6 +47,10 @@ public class DashboardController : Controller
         ViewBag.ActiveSection = "Notifications";
 
         var notifications = _notificationDb.GetAll().OrderByDescending(notif => notif.Id);
+        if(!notifications.Any())
+        {
+            _logger.LogInformation("No notifications found");
+        }
         var model = new NotificationViewModel
         {
             Notifications = notifications
@@ -229,8 +237,8 @@ public class DashboardController : Controller
                             {existingModel.ProcedureDescription} -> {procedure.ProcedureDescription}
                             {existingModel.ProcedureNotes} -> {procedure.ProcedureNotes}
             """;
-            
-            _notificationService.Add(title, stringMessage, NotificationReference.Procedures, _userService.GetUser());
+
+            _notificationService.Add(title, stringMessage, NotificationReference.Procedures, _userService.GetUser().Id);
 
             _procedureDb.UpdateExisitngModel(procedure);
             continue;
@@ -239,6 +247,83 @@ public class DashboardController : Controller
         _procedureDb.SaveChanges();
 
         return View("Procedures", model);
+    }
+
+    [HttpGet]
+    public IActionResult ActiveProcedures()
+    {
+        var activeProcedures = _activeProcedureDb.GetAll();
+        var viewModel = new ActiveProceduresViewModel
+        {
+            ActiveProcedures = activeProcedures.ToList()
+        };
+
+
+        return View(viewModel);
+    }
+
+    [HttpGet]
+    public IActionResult EditActiveProcedures()
+    {
+        var prodecureIdList = _procedureDb.GetAll();
+        var activeProcedures = _activeProcedureDb.GetAll();
+        _logger.LogInformation($"Active Procedures: {activeProcedures.Count()}");
+        foreach (var ap in activeProcedures)
+        {
+            _logger.LogInformation($"Procedure Id: {ap.ProcedureId}, Patient Id: {ap.PatientId}");
+            _logger.LogInformation($"Patient Name: {ap.Patient.FullName ?? "Null!"}");
+
+        }
+
+        ActiveProceduresViewModel viewModel = new ActiveProceduresViewModel
+        {
+            ActiveProcedures = activeProcedures.ToList()
+        };
+        var selectList = new SelectList(prodecureIdList, "Id", "ProcedureName");
+        foreach(var item in selectList.Items)
+        {
+            _logger.LogInformation($"Procedure Id List: {item.ToString()}");
+
+        }
+
+        ViewBag.ProcedureIdList = selectList;
+
+        return View(viewModel);
+    }
+
+    [HttpPost]
+    public IActionResult SaveActiveProcedures(ActiveProceduresViewModel model)
+    {
+        var activeProcedures = _activeProcedureDb.GetAll().ToList();
+
+        foreach (var activeProcedure in model.ActiveProcedures)
+        {
+            ActiveProcedure? existingModel;
+            if ((existingModel = _activeProcedureDb.GetById(activeProcedure.Id)) is null)
+            {
+                _activeProcedureDb.Add(activeProcedure);
+                continue;
+            }
+
+            if (existingModel.ProcedureId ==  activeProcedure.ProcedureId && existingModel.ProcedureServiceDateTime == activeProcedure.ProcedureServiceDateTime)
+            {
+                _logger.LogInformation("No changes detected");
+                continue;
+            }
+
+            var title = "Active Procedure";
+            var stringMessage = @$"""
+                UPDATED:    Active Procedure Id: {existingModel.ProcedureId} -> {activeProcedure.ProcedureId}
+                            Active Procedure Date: {existingModel.ProcedureServiceDateTime} -> {activeProcedure.ProcedureServiceDateTime}
+                """;
+
+            _notificationService.Add(title, stringMessage, NotificationReference.Procedures, _userService.GetUser().Id);
+
+            _activeProcedureDb.UpdateExisitngModel(activeProcedure);
+        }
+
+        _activeProcedureDb.SaveChanges();
+        return RedirectToAction("Notifications");
     }
 
     public IActionResult AccessDenied()

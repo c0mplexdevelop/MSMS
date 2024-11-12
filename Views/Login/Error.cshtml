@@ -1,0 +1,15 @@
+﻿<div class="error-page"> 
+    <h1>Oops! Something went wrong.</h1>
+    <p>We're sorry, but an error occurred while processing your request.</p> 
+    <p>Status Code: @Model.StatusCode</p>
+    <p>If you need further assistance, please 
+        <a href="/contact">contact us</a>.
+    </p> 
+    <p>
+        <a href="/">Return to Home Page</a>
+    </p> 
+    @if (Model.ShowErrorDetails)
+    {
+        <h2>Error Details</h2> <pre>@Model.ErrorDetails</pre>
+    } 
+</div>

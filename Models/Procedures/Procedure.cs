@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MSMS.Models.Procedures;
 
@@ -7,6 +8,7 @@ public class Procedure
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     public string ProcedureName { get; set; } = string.Empty;
+    [Precision(65,2)] // 65 digits in total, 2 after the decimal point
     public decimal ProcedurePrice { get; set; }
     public string ProcedureDescription { get; set; } = string.Empty;
     public string? ProcedureNotes { get; set; } = string.Empty;

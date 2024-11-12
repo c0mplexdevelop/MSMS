@@ -19,14 +19,14 @@ public class NotificationService
         _notificationDatabaseRepository.SaveChanges();
     }
 
-    public void Add(string title, string message, NotificationReference reference, User user)
+    public void Add(string title, string message, NotificationReference reference, int userID)
     {
         var notification = new Notification
         {
             Title = title,
             Message = message,
             ReferenceType = reference,
-            User = user,
+            UserId = userID,
             CreatedAt = DateOnly.FromDateTime(DateTime.Now)
         };
 

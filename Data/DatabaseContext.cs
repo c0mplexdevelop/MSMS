@@ -15,7 +15,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<Patient> Patients { get; set; }
     public DbSet<Procedure> Procedure { get; set; }
-    public DbSet<ActiveProcedure> PatientProcedures { get; set; }
+    public DbSet<ActiveProcedure> ActiveProcedures { get; set; }
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<User> Users { get; set; }
 
@@ -25,6 +25,9 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
         modelBuilder.Entity<Notification>().HasOne(n => n.User).WithMany().HasForeignKey(n => n.UserId);
 
         modelBuilder.Entity<Notification>().Property(entity => entity.Id).ValueGeneratedOnAdd();
+
+        modelBuilder.Entity<ActiveProcedure>().HasOne(n => n.Procedure).WithMany().HasForeignKey(n => n.ProcedureId);
+        modelBuilder.Entity<ActiveProcedure>().HasOne(n => n.Patient).WithMany().HasForeignKey(n => n.PatientId);
 
         modelBuilder.Entity<Supplier>().HasData(
             new Supplier
@@ -113,7 +116,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
             new() {
                 Id = 2,
                 Name = "Jane Doe",
-                Username = "test",
+                Username = "test123",
                 Password = "test123",
                 Role = UserRole.Guest
             });
@@ -126,6 +129,22 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 Message = "Hello, World!",
                 CreatedAt = DateOnly.FromDateTime(DateTime.Now)
 
+            });
+
+        modelBuilder.Entity<ActiveProcedure>().HasData(
+            new ActiveProcedure
+            {
+                Id = 1,
+                ProcedureId = 1,
+                PatientId = 1,
+                ProcedureServiceDateTime = DateTime.Now
+            },
+            new ActiveProcedure
+            {
+                Id = 2,
+                ProcedureId = 1,
+                PatientId = 2,
+                ProcedureServiceDateTime = DateTime.Now
             });
 
         base.OnModelCreating(modelBuilder);

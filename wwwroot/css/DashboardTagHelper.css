@@ -1,4 +1,8 @@
-﻿@font-face {
+﻿:root{
+	--active-columns: 6
+}
+
+@font-face {
 	font-family: Inter;
 	src: url("~/font/Inter.ttf");
 }
@@ -42,9 +46,12 @@
 }
 
 #main-form {
-	display: table-cell;
-	-webkit-column-span: inherit;
-	column-span: all;
+	grid-column: span all;
+	width: 100%;
+}
+
+#activeprod-form {
+	grid-column: span var(--active-columns);
 	width: 100%;
 }
 

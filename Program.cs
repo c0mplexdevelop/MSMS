@@ -15,8 +15,8 @@ builder.Services.AddSession();
 
 var dbServerVersion = new MySqlServerVersion(new Version(8, 0, 29));
 builder.Services.AddDbContext<DatabaseContext>(
-    options => options.UseInMemoryDatabase("MSMS").EnableSensitiveDataLogging()
-    //options => options.UseMySql(connectionString, dbServerVersion).EnableSensitiveDataLogging()
+    //options => options.UseInMemoryDatabase("MSMS").EnableSensitiveDataLogging()
+    options => options.UseMySql(connectionString, dbServerVersion).EnableSensitiveDataLogging()
     );
 
 
@@ -26,6 +26,7 @@ builder.Services.AddScoped<IDatabaseRepository<Supplier>, SupplierRepository>();
 builder.Services.AddScoped<IPatientDatabaseRepository, PatientRepository>();
 builder.Services.AddScoped<IProcedureDatabaseRepository, ProcedureRepository>();
 builder.Services.AddScoped<INotificationDatabaseRepository, NotificationRepository>();
+builder.Services.AddScoped<IActiveProcedureDatabaseRepository, ActiveProcedureRepository>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<UserService>();
 
@@ -62,7 +63,9 @@ if (app.Environment.IsDevelopment())
         try
         {
             var context = services.GetRequiredService<DatabaseContext>();
-            context.Database.EnsureCreated();
+            //context.Database.EnsureDeleted();
+            //context.Database.EnsureCreated();
+
         }
         catch (Exception ex)
         {
@@ -72,7 +75,7 @@ if (app.Environment.IsDevelopment())
     }
 
 
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/Login/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }

@@ -1,0 +1,111 @@
+﻿@{
+    
+}
+
+@using MSMS.Models.Procedures;
+
+@model MSMS.Models.Procedures.ActiveProceduresViewModel
+
+<div class="container">
+    <div class="max-w search-bar">
+        <form asp-action="SearchActiveProcedures" method="post" class="inventory-form">
+            <span><i class="fas fa-search"></i></span>
+            <input type="text" class="input-search" id="searchString" name="searchString" value="@ViewData["SearchString"]" />
+            <input type="submit" hidden />
+        </form>
+        <form asp-action="ActiveProcedures" method="get" id="EditProcedure">
+            <input hidden type="number" name="addAmount" id="hiddenSearchString" />
+            <button type="submit">Return</button>
+        </form>
+    </div>
+    <div class="div-grid">
+        <div class="div-table-row" id="header-row">
+            <div class="div-table-cell header">
+                <span>
+                    Patient ID
+                </span>
+            </div>
+            <div class="div-table-cell header">
+                <span>
+                    Patient Full Name
+                </span>
+            </div>
+            <div class="div-table-cell header">
+                <span>
+                    Procedure Id
+                </span>
+            </div>
+            <div class="div-table-cell header">
+                <span>
+                    Procedure Name
+                </span>
+            </div>
+            <div class="div-table-cell header">
+                <span>
+                    Procedure Price
+                </span>
+            </div>
+            <div class="div-table-cell header">
+                <span>
+                    Procedure Date
+                </span>
+            </div>
+        </div>
+        <form asp-action="SaveActiveProcedures" method="post" id="activeprod-form" style="">
+
+            @for (int i = 0; i < Model.ActiveProcedures.Count(); i++)
+            {
+                var patient = Model.ActiveProcedures[i].Patient;
+                var procedure = Model.ActiveProcedures[i].Procedure;
+                <div class="div-table-row">
+                    @* Necessary because MVC doesnt bind properly if not all model fields have an input binded to it. *@
+                    <input type="hidden" asp-for="ActiveProcedures[i].Id" />
+                    <input type="hidden" asp-for="ActiveProcedures[i].PatientId" />
+
+                    <div class="div-table-cell">
+                        <span>
+                            @patient.Id
+                        </span>
+                    </div>
+                    <div class="div-table-cell">
+                        <span>
+                            @patient.FullName
+                        </span>
+                    </div>
+                    <div class="div-table-cell">
+                        <span>
+                            <select asp-for="ActiveProcedures[i].ProcedureId" asp-items="ViewBag.ProcedureIdList"></select>
+                        </span>
+                    </div>
+                    <div class="div-table-cell">
+                        <span>
+                            @procedure.ProcedureName
+                        </span>
+                    </div>
+                    <div class="div-table-cell">
+                        <span>
+                            &#8369
+                        </span>
+                        <span>
+                            @procedure.ProcedurePrice
+                        </span>
+                    </div>
+                    <div class="div-table-cell">
+                        <span>
+                            <input type="datetime" asp-for="ActiveProcedures[i].ProcedureServiceDateTime" />
+                        </span>
+                    </div>
+                </div>
+            }
+              
+            <button type="submit">Save</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById("addProcedure").addEventListener("submit", function (e) {
+        let searchString = document.getElementById("searchString").value;
+        document.getElementById('hiddenSearchString').value = searchString;
+    });
+</script>

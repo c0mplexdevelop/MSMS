@@ -6,10 +6,12 @@ namespace MSMS.Data.Repos;
 public class NotificationRepository : INotificationDatabaseRepository
 {
     private readonly DatabaseContext context;
+    private ILogger<NotificationRepository> logger;
 
-    public NotificationRepository(DatabaseContext context)
+    public NotificationRepository(DatabaseContext context, ILogger<NotificationRepository> logger)
     {
         this.context = context;
+        this.logger = logger;
     }
 
     public void Add(Notification model)
@@ -29,7 +31,7 @@ public class NotificationRepository : INotificationDatabaseRepository
 
     public Notification? GetByIdWithNoTracking(int id)
     {
-        return context.Notifications.AsNoTracking().FirstOrDefault(n => n.Id == id);
+        return context.Notifications.FirstOrDefault(n => n.Id == id);
     }
 
     public IEnumerable<Notification> GetNotificationByReference(NotificationReference reference)

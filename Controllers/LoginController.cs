@@ -8,6 +8,7 @@ using MSMS.Models.Login;
 using MSMS.Services;
 using System.Diagnostics;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace MSMS.Controllers;
 
@@ -28,6 +29,7 @@ public class LoginController : Controller
     [HttpGet]
     public async Task<IActionResult> Login()
     {
+        HttpContext.Session.Clear();
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return View();
     }
