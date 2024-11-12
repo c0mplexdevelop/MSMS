@@ -44,10 +44,10 @@ public class LoginController : Controller
         {
             return View(model);
         }
-
+        HttpContext.Session.SetString("User", JsonSerializer.Serialize(queriedUser));
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, queriedUser!.Username),
+            new Claim(ClaimTypes.Name, queriedUser!.Name),
             new Claim(ClaimTypes.Role, queriedUser!.Role.ToString())
         };
 
