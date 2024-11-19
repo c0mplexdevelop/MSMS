@@ -15,8 +15,8 @@ builder.Services.AddSession();
 
 var dbServerVersion = new MySqlServerVersion(new Version(8, 0, 29));
 builder.Services.AddDbContext<DatabaseContext>(
-    //options => options.UseInMemoryDatabase("MSMS").EnableSensitiveDataLogging()
-    options => options.UseMySql(connectionString, dbServerVersion).EnableSensitiveDataLogging()
+    options => options.UseInMemoryDatabase("MSMS").EnableSensitiveDataLogging()
+    //options => options.UseMySql(connectionString, dbServerVersion).EnableSensitiveDataLogging()
     );
 
 
@@ -64,7 +64,7 @@ if (app.Environment.IsDevelopment())
         {
             var context = services.GetRequiredService<DatabaseContext>();
             //context.Database.EnsureDeleted();
-            //context.Database.EnsureCreated();
+            context.Database.EnsureCreated();
 
         }
         catch (Exception ex)
