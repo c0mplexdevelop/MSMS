@@ -1,0 +1,282 @@
+﻿@{
+
+}
+
+@using MSMS.Models.Procedures;
+
+@model MSMS.Models.Procedures.ActiveProceduresViewModel
+
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</head>
+
+<div class="container">
+    <div class="max-w search-bar">
+        <form asp-action="SearchActiveProcedures" id="searchProcedure" method="post" class="inventory-form">
+            <span><i class="fas fa-search"></i></span>
+            <input type="text" class="input-search" id="searchString" name="searchString" value="@ViewData["SearchString"]" />
+            <input type="submit" hidden />
+        </form>
+        <form asp-action="ActiveProcedures" method="get" id="EditProcedure">
+            <input hidden type="number" name="addAmount" id="hiddenSearchString" />
+            <button type="submit">Return</button>
+        </form>
+    </div>
+    <div class="div-grid">
+        <div class="div-table-row" id="header-row">
+            <div class="div-table-cell header">
+                <span>
+                    Patient ID
+                </span>
+            </div>
+            <div class="div-table-cell header">
+                <span>
+                    Patient Full Name
+                </span>
+            </div>
+            <div class="div-table-cell header">
+                <span>
+                    Procedure Id
+                </span>
+            </div>
+            <div class="div-table-cell header">
+                <span>
+                    Procedure Name
+                </span>
+            </div>
+            <div class="div-table-cell header">
+                <span>
+                    Procedure Price
+                </span>
+            </div>
+            <div class="div-table-cell header">
+                <span>
+                    Procedure Date
+                </span>
+            </div>
+            <div class="div-table-cell header">
+                <span>
+                    Procedure Time
+                </span>
+            </div>
+        </div>
+        
+        <form asp-action="SaveActiveProcedures" method="post" id="activeprod-form" style="">
+
+            @for (int i = 0; i < Model.ActiveProcedures.Count(); i++)
+            {
+                var patient = Model.ActiveProcedures[i].Patient;
+                var procedure = Model.ActiveProcedures[i].Procedure;
+                if (procedure is null || patient is null)
+                {
+                    <div class="div-table-row">
+                        <input type="hidden" asp-for="ActiveProcedures[i].Id">
+                        @* <input type="hidden" asp-for="ActiveProcedures[i].Patient" />
+                        <input type="hidden" asp-for="ActiveProcedures[i].Procedure" /> *@
+                        <div class="div-table-cell">
+                            @if(patient is null)
+                            {
+                                <select id="patient-id" asp-for="ActiveProcedures[i].PatientId" asp-items="ViewBag.PatientSelectList">
+                                    <option value=""></option>
+                                </select>
+                            } else
+                            {
+                                <span>
+                                    @patient.Id
+                                </span>
+                            }
+                        </div>
+                        <div class="div-table-cell">
+                            @if(patient is null)
+                            {
+                                @* <input type="hidden" asp-for="ActiveProcedures[i].Patient.FirstName" />
+                                <input type="hidden" asp-for="ActiveProcedures[i].Patient.MiddleName" />
+                                <input type="hidden" asp-for="ActiveProcedures[i].Patient.LastName" /> *@
+                                <span id="patient-name"></span>
+                            } else
+                            {
+                                <span>
+                                    @patient?.FullName
+                                </span>
+                            }
+                        </div>
+                        
+                        <div class="div-table-cell">
+                            @if(procedure is null)
+                            {
+                                <span>
+                                    <select id="procedure-id" asp-for="ActiveProcedures[i].ProcedureId" asp-items="ViewBag.ProcedureSelectList">
+                                        <option value=""></option>
+                                    </select>
+                                </span>
+                            } else
+                            {
+                                <span>
+                                    @procedure.Id
+                                </span>
+                            }
+                        </div>
+                        <div class="div-table-cell">
+                            @if(procedure is null)
+                            {
+                                <span id="procedure-name">
+
+                                </span>
+                            } else
+                            {
+                                <span>
+                                    @procedure.ProcedureName
+                                </span>
+                            }
+                        </div>
+                        <div class="div-table-cell">
+                            @if (procedure is null)
+                            {
+                                <span id="procedure-price">
+
+                                </span>
+                            }
+                            else
+                            {
+                                <span>
+                                    &#8369 @procedure.ProcedurePrice
+                                </span>
+                            }
+                        </div>
+                        <div class="div-table-cell @(procedure is null ? "active-datetime" : "")">
+                            @if(procedure is null)
+                            {
+                                <span>
+                                    <input id="datetime" type="time" asp-for="ActiveProcedures[i].ProcedureServiceDateTime" min="08:00" max="22:00" step="60" />
+                                </span>
+                                
+                            } else
+                            {
+                                <span>
+                                    @(DateOnly.FromDateTime(Model.ActiveProcedures[i].ProcedureServiceDateTime))
+                                </span>
+                            }
+                        </div>
+                        <div class="div-table-cell" @(procedure is null ? "hidden" : "")>
+                            @if(procedure is null)
+                            {
+                                
+                            } else 
+                            {
+                                <span>
+                                    @Model.ActiveProcedures[i].ProcedureServiceDateTime.TimeOfDay
+                                </span>
+                            }
+                        </div>
+                    </div>
+                } else
+                {
+                    <div class="div-table-row">
+
+                        @* Necessary because MVC doesnt bind properly if not all model fields have an input binded to it. *@
+                        <input type="hidden" asp-for="ActiveProcedures[i].Id" />
+                        <input type="hidden" asp-for="ActiveProcedures[i].PatientId" />
+                        <input type="hidden" asp-for="ActiveProcedures[i].ProcedureId" />
+                        <input type="hidden" asp-for="ActiveProcedures[i].ProcedureServiceDateTime" />
+
+                        <div class="div-table-cell">
+                            <span>
+                                @patient.Id
+                            </span>
+                        </div>
+                        <div class="div-table-cell">
+                            <span>
+                                @patient.FullName
+                            </span>
+                        </div>
+                        <div class="div-table-cell">
+                            <span>
+                                @procedure.Id
+                            </span>
+                        </div>
+                        <div class="div-table-cell">
+                            <span>
+                                @procedure.ProcedureName
+                            </span>
+                        </div>
+                        <div class="div-table-cell">
+                            <span>
+                                &#8369
+                            </span>
+                            <span>
+                                @procedure.ProcedurePrice
+                            </span>
+                        </div>
+                        <div class="div-table-cell">
+                            <span>
+                                @Model.ActiveProcedures[i].ProcedureServiceDateTime
+                            </span>
+                        </div>
+                    </div>
+                }
+            }
+
+            <button type="submit">Save</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById("searchProcedure").addEventListener("submit", function (e) {
+        let searchString = document.getElementById("searchString").value;
+        document.getElementById('hiddenSearchString').value = searchString;
+    });
+
+    var selectElement = document.getElementById("patient-id");
+    var spanElement = document.getElementById("patient-name");
+    selectElement.addEventListener("change", function () {
+        var patientId = selectElement.value;
+        console.log(patientId);
+        if (patientId) {
+            fetch(`/Procedure/GetPatientById?id=${patientId}`)
+                .then(response => {
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    spanElement.textContent = data['fullName'] || "Patient not found";
+                })
+                .catch(error => {
+                    console.error(`Error fetching patient name: ${error}`);
+                });
+        } else {
+            spanElement.textContent = "None";
+        }
+    });
+
+    var procedureSelectElement = document.getElementById("procedure-id");
+    var procedureNameElement = document.getElementById("procedure-name");
+    var procedurePriceElemenet = document.getElementById("procedure-price");
+    procedureSelectElement.addEventListener("change", function () {
+        var procedureId = procedureSelectElement.value;
+        console.log(procedureId);
+        if (procedureId) {
+            fetch(`/Procedure/GetProcedureById?id=${procedureId}`)
+                .then(response => {
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    procedureNameElement.textContent = data['procedureName'] || "Procedure not found";
+                    procedurePriceElemenet.textContent = `\u20B1 ${data['procedurePrice']}` || "Procedure not found";
+                })
+                .catch(error => {
+                    console.error(`Error fetching procedure name: ${error}`);
+                });
+        } else {dddddd
+            procedureNameElement.textContent = "None";
+        }
+    });
+
+    flatpickr("#datetime", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        defaultDate: "today"
+    })
+</script>

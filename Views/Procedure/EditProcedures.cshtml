@@ -1,0 +1,91 @@
+﻿@{
+    ViewData["Title"] = "Procedures";
+}
+
+@using MSMS.Models.Procedures;
+
+@model MSMS.Models.Procedures.ProceduresViewModel
+<div class="container">
+    <div class="max-w search-bar">
+        <form asp-action="SearchProcedures" method="post" class="inventory-form">
+            <span><i class="fas fa-search"></i></span>
+            <input type="text" class="input-search" id="searchString" name="searchString" value="@ViewData["SearchString"]" />
+            <input type="submit" hidden />
+        </form>
+        <form asp-action="AddProcedure" method="post" id="addProcedures">
+            <input hidden type="number" name="addAmount" id="hiddenSearchString" />
+            <button type="submit">Add</button>
+        </form>
+        <form asp-action="Procedures" method="get" id="editProcedures">
+            <button type="submit">Return</button>
+        </form>
+    </div>
+    <div class="div-grid">
+        <div class="div-table-row" id="header-row">
+            <div class="div-table-cell header">
+                <span>
+                    Procedure ID
+                </span>
+            </div>
+            <div class="div-table-cell header">
+                <span>
+                    Procedure Name
+                </span>
+            </div>
+            <div class="div-table-cell header">
+                <span>
+                    Procedure Description
+                </span>
+            </div>
+            <div class="div-table-cell header">
+                <span>
+                    Cost
+                </span>
+            </div>
+            <div class="div-table-cell header">
+                <span>
+                    Notes
+                </span>
+            </div>
+        </div>
+        <form asp-action="SaveProcedures" method="post" id="main-form" colspan="5" style="grid-column: span 5;">
+
+            @for (int i = 0; i < Model.Procedures.Count(); i++)
+            {
+                <div class="div-table-row">
+
+                    @* Necessary because MVC doesnt bind properly if not all model fields have an input binded to it. *@
+                    <input type="hidden" asp-for="Procedures[i].Id" />
+                    <div class="div-table-cell">
+                        <span>
+                            @Model.Procedures[i].Id
+                        </span>
+                    </div>
+                    <div class="div-table-cell">
+                        <input asp-for="Procedures[i].ProcedureName">
+                    </div>
+                    <div class="div-table-cell">
+                        <input asp-for="Procedures[i].ProcedureDescription">
+                    </div>
+                    <div class="div-table-cell">
+                        <input asp-for="Procedures[i].ProcedurePrice">
+                    </div>
+                    <div class="div-table-cell">
+                        <input asp-for="Procedures[i].ProcedureNotes">
+                    </div>
+                </div>
+            }
+
+            <button type="submit">Save</button>
+        </form>
+
+
+    </div>
+</div>
+
+<script>
+    document.getElementById("addProcedure").addEventListener("submit", function (e) {
+        let searchString = document.getElementById("searchString").value;
+        document.getElementById('hiddenSearchString').value = searchString;
+    });
+</script>
