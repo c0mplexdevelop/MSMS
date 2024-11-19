@@ -4,5 +4,6 @@ public enum NotificationReference
 {
     Inventory,
     Procedures,
+    ActiveProcedures,
     Records
 }
