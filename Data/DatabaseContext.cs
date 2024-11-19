@@ -144,7 +144,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 Id = 2,
                 ProcedureId = 1,
                 PatientId = 2,
-                ProcedureServiceDateTime = DateTime.Now
+                ProcedureServiceDateTime = DateTime.Now.AddDays(-1)
             });
 
         base.OnModelCreating(modelBuilder);
