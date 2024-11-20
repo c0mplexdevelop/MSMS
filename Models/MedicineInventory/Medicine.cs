@@ -1,4 +1,6 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
+
 namespace MSMS.Models.MedicineInventory;
 
 public class Medicine
@@ -10,6 +12,7 @@ public class Medicine
     public int Dosage { get; set; }
     public DateOnly ExpiryDate { get; set; }
     public DateOnly SuppliedDate { get; set; }
+    [Precision(38,2)]
     public decimal Price { get; set; }
 
     public int SupplierId { get; set; }

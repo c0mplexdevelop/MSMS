@@ -58,7 +58,7 @@
                     <input type="hidden" asp-for="Procedures[i].Id" />
                     <div class="div-table-cell">
                         <span>
-                            @Model.Procedures[i].Id
+                            @(Model.Procedures[i].Id == 0 ? i + 1 : Model.Procedures[i].Id)
                         </span>
                     </div>
                     <div class="div-table-cell">

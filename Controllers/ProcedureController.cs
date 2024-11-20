@@ -81,19 +81,14 @@ public class ProcedureController : Controller
 
         if (addAmount <= 1)
         {
-            procedures.Add(new Procedure
-            {
-                Id = lastId + 1
-            });
+            procedures.Add(new Procedure());
         }
         else
         {
             for (int i = 0; i < addAmount; i++)
             {
-                procedures.Add(new Procedure
-                {
-                    Id = lastId + 1
-                });
+                procedures.Add(new Procedure());
+
                 lastId++;
             }
         }
@@ -220,10 +215,7 @@ public class ProcedureController : Controller
         if (addAmount <= 1)
         {
             activeProcedures.Add(
-                new ActiveProcedure
-                {
-                    Id = lastId + 1
-                }
+                new ActiveProcedure()
             );
         }
         else
@@ -231,10 +223,7 @@ public class ProcedureController : Controller
             for (int i = 0; i < addAmount; i++)
             {
                 activeProcedures.Add(
-                    new ActiveProcedure
-                    {
-                        Id = lastId + 1
-                    }
+                    new ActiveProcedure()
                 );
                 lastId++;
             }
