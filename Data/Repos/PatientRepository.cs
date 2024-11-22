@@ -1,4 +1,4 @@
-﻿using MSMS.Models.Procedures;
+﻿using MSMS.Models.Diagnosis;
 
 namespace MSMS.Data.Repos;
 
@@ -11,6 +11,11 @@ public class PatientRepository : IPatientDatabaseRepository
     }
 
     public void Add(Patient model)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Delete(Patient model)
     {
         throw new NotImplementedException();
     }

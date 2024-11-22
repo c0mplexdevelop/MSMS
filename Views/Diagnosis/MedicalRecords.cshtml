@@ -2,6 +2,58 @@
 
 }
 
-<div>
+@model MSMS.Models.Diagnosis.PatientViewModel
 
+<div class="container">
+    <div class="div-grid">
+        <div class="div-table-row">
+            <div class="div-table-cell header">
+                <span>
+                    Patient Id
+                </span>
+            </div>
+            <div class="div-table-cell">
+                <span>
+                    First Name
+                </span>
+            </div>
+            <div class="div-table-cell">
+                <span>
+                    Middle Name
+                </span>
+            </div>
+            <div class="div-table-cell">
+                <span>
+                    Last Name
+                </span>
+            </div>
+            <div class="div-table-cell">
+                <span>
+                    Contact Number
+                </span>
+            </div>
+        </div>
+        @foreach (var patient in Model.Patients)
+        {
+            <a href="/Diagnosis/PatientMedicalRecord/@patient.Id" class="div-table-row">
+                <div class="div-table-cell">
+                    <span>@patient.Id</span>
+                </div>
+                <div class="div-table-cell">
+                    <span>@patient.FirstName</span>
+                </div>
+                <div class="div-table-cell">
+                    <span>@patient.MiddleName</span>
+                </div>
+                <div class="div-table-cell">
+                    <span>@patient.LastName</span>
+                </div>
+                <div class="div-table-cell">
+                    <span>@patient.ContactNumber</span>
+                </div>
+            </a>
+        }
+    </div>
+
+   
 </div>

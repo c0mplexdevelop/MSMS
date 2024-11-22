@@ -7,7 +7,9 @@ using MSMS.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("SQLServerJaveDb")!;
+var labConnString = builder.Configuration.GetConnectionString("SQLServerJaveDb")!;
+var emsConnString = builder.Configuration.GetConnectionString("EMSdb");
+var localSqlServerConnString = builder.Configuration.GetConnectionString("LocalSQLServerDb");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -17,9 +19,12 @@ builder.Services.AddSession();
 builder.Services.AddDbContext<DatabaseContext>(
     //options => options.UseInMemoryDatabase("MSMS").EnableSensitiveDataLogging()
     //options => options.UseMySql(connectionString, dbServerVersion).EnableSensitiveDataLogging()
-    options => options.UseSqlServer(connectionString).EnableSensitiveDataLogging()
+    options => options.UseSqlServer(localSqlServerConnString).EnableSensitiveDataLogging()
     );
 
+builder.Services.AddDbContext<EMSDatabaseContext>(
+        options => options.UseSqlServer().EnableSensitiveDataLogging()
+    );
 
 builder.Services.AddScoped<IUserDatabaseRepository, UserRepository>();
 builder.Services.AddScoped<IMedicineDatabaseRepository, MedicineRepository>();

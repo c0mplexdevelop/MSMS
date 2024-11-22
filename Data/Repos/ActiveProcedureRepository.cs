@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MSMS.Models.Diagnosis;
 using MSMS.Models.Procedures;
 
 namespace MSMS.Data.Repos;
@@ -15,6 +16,12 @@ public class ActiveProcedureRepository : IActiveProcedureDatabaseRepository
     public void Add(ActiveProcedure model)
     {
         context.Add(model);
+    }
+
+    public void Delete(ActiveProcedure model)
+    {
+        context.Remove(model);
+        context.SaveChanges();
     }
 
     public IEnumerable<ActiveProcedure> GetAll()

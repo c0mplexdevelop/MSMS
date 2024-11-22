@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MSMS.Models.Diagnosis;
 
 namespace MSMS.Models.Procedures;
 

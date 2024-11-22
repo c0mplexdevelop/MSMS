@@ -39,4 +39,9 @@ public class SupplierRepository : IDatabaseRepository<Supplier>
     {
         throw new NotImplementedException();
     }
+
+    public void Delete(Supplier model)
+    {
+        throw new NotImplementedException();
+    }
 }

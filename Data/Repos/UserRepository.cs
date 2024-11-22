@@ -19,6 +19,11 @@ public class UserRepository : IUserDatabaseRepository
         throw new NotImplementedException();
     }
 
+    public void Delete(User model)
+    {
+        throw new NotImplementedException();
+    }
+
     public IEnumerable<User> GetAll()
     {
         {

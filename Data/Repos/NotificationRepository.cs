@@ -19,6 +19,11 @@ public class NotificationRepository : INotificationDatabaseRepository
         context.Notifications.Add(model);
     }
 
+    public void Delete(Notification model)
+    {
+        throw new NotImplementedException();
+    }
+
     public IEnumerable<Notification> GetAll()
     {
         return [.. context.Notifications.Include(notif => notif.User)];

@@ -5,6 +5,7 @@ using MSMS.Models.MedicineInventory;
 using MSMS.Models.Procedures;
 using MSMS.Auth;
 using MSMS.Models.Notification;
+using MSMS.Models.Diagnosis;
 
 namespace MSMS.Data;
 
@@ -29,12 +30,19 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
         modelBuilder.Entity<ActiveProcedure>().HasOne(n => n.Procedure).WithMany().HasForeignKey(n => n.ProcedureId);
         modelBuilder.Entity<ActiveProcedure>().HasOne(n => n.Patient).WithMany().HasForeignKey(n => n.PatientId);
 
+        modelBuilder.Entity<Diagnosis>().HasOne(n => n.Patient).WithMany().HasForeignKey(n => n.PatientId).OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<MedicalRecord>().HasOne(mr => mr.Patient).WithOne(p => p.MedicalRecord);
+        modelBuilder.Entity<MedicalRecord>().HasMany(mr => mr.Diagnoses).WithOne().IsRequired().OnDelete(DeleteBehavior.Cascade);
+
+
         modelBuilder.Entity<Supplier>().HasData(
             new Supplier
             {
                 Id = 1,
                 Name = "Supplier 1",
                 Address = "Address 1",
+
                 ContactNumber = "1234567890"
             },
             new Supplier
@@ -74,7 +82,10 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 FirstName = "John",
                 MiddleName = "Doe",
                 LastName = "Smith",
-                ContactNumber = "1234567890"
+                Age = 40,
+                ContactNumber = "1234567890",
+                DateOfBirth = new DateTime(1980, 1, 1),
+                Gender = Gender.Male
             },
             new Patient
             {
@@ -82,7 +93,10 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 FirstName = "Jane",
                 MiddleName = "Doe",
                 LastName = "Smith",
-                ContactNumber = "0987654321"
+                Age = 30,
+                ContactNumber = "0987654321",
+                DateOfBirth = new DateTime(1990, 1, 1),
+                Gender = Gender.Female
             });
 
         modelBuilder.Entity<Procedure>().HasData(

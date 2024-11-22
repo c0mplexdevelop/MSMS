@@ -9,6 +9,7 @@ public interface IDatabaseRepository<T> where T : class
     IEnumerable<T> GetAll();
     void UpdateExisitngModel(T model);
     void Add(T model);
+    void Delete(T model);
     void SaveChanges();
 
 }

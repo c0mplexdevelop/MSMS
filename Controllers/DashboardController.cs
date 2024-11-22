@@ -8,7 +8,6 @@ using MSMS.Services;
 
 namespace MSMS.Controllers;
 
-[Authorize]
 public class DashboardController : Controller
 {
     private ILogger<DashboardController> _logger;

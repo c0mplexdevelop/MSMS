@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using MSMS.Data;
 using MSMS.Data.Repos;
 using MSMS.Models;
 using MSMS.Models.Dashboard;
@@ -20,6 +21,7 @@ public class LoginController : Controller
     private readonly UserService _userService;
 
     public LoginController(ILogger<LoginController> logger, IUserDatabaseRepository databaseRepository, UserService userService)
+
     {
         _logger = logger;
         _userRepository = databaseRepository;

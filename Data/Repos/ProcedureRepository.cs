@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MSMS.Models.Diagnosis;
 using MSMS.Models.Procedures;
 
 namespace MSMS.Data.Repos;
@@ -71,6 +72,11 @@ public class ProcedureRepository : IProcedureDatabaseRepository
     {
         return context.ActiveProcedures.Include(ap => ap.Procedure)
             .Include(ap => ap.Patient);
+    }
+
+    public void Delete(Procedure model)
+    {
+        throw new NotImplementedException();
     }
 }
 

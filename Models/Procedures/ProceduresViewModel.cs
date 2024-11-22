@@ -1,4 +1,6 @@
-﻿namespace MSMS.Models.Procedures;
+﻿using MSMS.Models.Diagnosis;
+
+namespace MSMS.Models.Procedures;
 
 public class ProceduresViewModel
 {

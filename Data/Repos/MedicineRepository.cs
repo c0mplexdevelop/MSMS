@@ -17,6 +17,11 @@ public class MedicineRepository : IMedicineDatabaseRepository
         throw new NotImplementedException();
     }
 
+    public void Delete(Medicine model)
+    {
+        throw new NotImplementedException();
+    }
+
     //public MedicineRepository()
     //{
     //var supplier1 = new Supplier

@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace MSMS.Migrations
+namespace MSMS.Migrations.LabMigrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241120062906_InitialMigration")]
+    [Migration("20241122141106_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -77,6 +77,187 @@ namespace MSMS.Migrations
                         });
                 });
 
+            modelBuilder.Entity("MSMS.Models.Diagnosis.Diagnosis", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DiagnosisDetails")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Doctor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MedicalRecordId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MedicalRecordId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Diagnosis");
+                });
+
+            modelBuilder.Entity("MSMS.Models.Diagnosis.MedicalRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CurrentMedications")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Doctor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MedicalHistory")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RecordDetails")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PatientId")
+                        .IsUnique();
+
+                    b.ToTable("MedicalRecord");
+                });
+
+            modelBuilder.Entity("MSMS.Models.Diagnosis.Patient", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BloodPressure")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmergencyContact")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmergencyPerson")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmergencyRelationship")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Employer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FamilyHistory")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Height")
+                        .HasColumnType("int");
+
+                    b.Property<string>("InsuranceDetails")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Occupation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ParentGuardianContact")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ParentGuardianName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PastMedicalHistory")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PrimaryCareProvider")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SpouseName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Weight")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Patients");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ContactNumber = "1234567890",
+                            DateOfBirth = new DateTime(1980, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "John",
+                            Gender = 0,
+                            LastName = "Smith",
+                            MiddleName = "Doe"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ContactNumber = "0987654321",
+                            DateOfBirth = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Jane",
+                            Gender = 1,
+                            LastName = "Smith",
+                            MiddleName = "Doe"
+                        });
+                });
+
             modelBuilder.Entity("MSMS.Models.MedicineInventory.Medicine", b =>
                 {
                     b.Property<int>("Id")
@@ -100,7 +281,8 @@ namespace MSMS.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(38, 2)
+                        .HasColumnType("decimal(38,2)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -225,7 +407,7 @@ namespace MSMS.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateOnly(2024, 11, 20),
+                            CreatedAt = new DateOnly(2024, 11, 22),
                             Message = "Hello, World!",
                             ReferenceType = 0,
                             Title = "",
@@ -264,60 +446,14 @@ namespace MSMS.Migrations
                             Id = 1,
                             PatientId = 1,
                             ProcedureId = 1,
-                            ProcedureServiceDateTime = new DateTime(2024, 11, 20, 14, 29, 2, 422, DateTimeKind.Local).AddTicks(1231)
+                            ProcedureServiceDateTime = new DateTime(2024, 11, 22, 22, 11, 6, 232, DateTimeKind.Local).AddTicks(5666)
                         },
                         new
                         {
                             Id = 2,
                             PatientId = 2,
                             ProcedureId = 1,
-                            ProcedureServiceDateTime = new DateTime(2024, 11, 19, 14, 29, 2, 422, DateTimeKind.Local).AddTicks(1233)
-                        });
-                });
-
-            modelBuilder.Entity("MSMS.Models.Procedures.Patient", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ContactNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MiddleName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Patients");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ContactNumber = "1234567890",
-                            FirstName = "John",
-                            LastName = "Smith",
-                            MiddleName = "Doe"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ContactNumber = "0987654321",
-                            FirstName = "Jane",
-                            LastName = "Smith",
-                            MiddleName = "Doe"
+                            ProcedureServiceDateTime = new DateTime(2024, 11, 21, 22, 11, 6, 232, DateTimeKind.Local).AddTicks(5667)
                         });
                 });
 
@@ -341,8 +477,8 @@ namespace MSMS.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("ProcedurePrice")
-                        .HasPrecision(65, 2)
-                        .HasColumnType("decimal(65,2)");
+                        .HasPrecision(38, 2)
+                        .HasColumnType("decimal(38,2)");
 
                     b.HasKey("Id");
 
@@ -365,6 +501,34 @@ namespace MSMS.Migrations
                             ProcedureNotes = "Make Patient drink water till they excrete.",
                             ProcedurePrice = 100.00m
                         });
+                });
+
+            modelBuilder.Entity("MSMS.Models.Diagnosis.Diagnosis", b =>
+                {
+                    b.HasOne("MSMS.Models.Diagnosis.MedicalRecord", null)
+                        .WithMany("Diagnoses")
+                        .HasForeignKey("MedicalRecordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MSMS.Models.Diagnosis.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("MSMS.Models.Diagnosis.MedicalRecord", b =>
+                {
+                    b.HasOne("MSMS.Models.Diagnosis.Patient", "Patient")
+                        .WithOne("MedicalRecord")
+                        .HasForeignKey("MSMS.Models.Diagnosis.MedicalRecord", "PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("MSMS.Models.MedicineInventory.Medicine", b =>
@@ -391,7 +555,7 @@ namespace MSMS.Migrations
 
             modelBuilder.Entity("MSMS.Models.Procedures.ActiveProcedure", b =>
                 {
-                    b.HasOne("MSMS.Models.Procedures.Patient", "Patient")
+                    b.HasOne("MSMS.Models.Diagnosis.Patient", "Patient")
                         .WithMany()
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -406,6 +570,17 @@ namespace MSMS.Migrations
                     b.Navigation("Patient");
 
                     b.Navigation("Procedure");
+                });
+
+            modelBuilder.Entity("MSMS.Models.Diagnosis.MedicalRecord", b =>
+                {
+                    b.Navigation("Diagnoses");
+                });
+
+            modelBuilder.Entity("MSMS.Models.Diagnosis.Patient", b =>
+                {
+                    b.Navigation("MedicalRecord")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MSMS.Models.MedicineInventory.Supplier", b =>
