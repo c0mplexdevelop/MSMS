@@ -147,7 +147,7 @@ public class ProcedureController : Controller
 
             _notificationService.Add(title, stringMessage, NotificationReference.Procedures, _userService.GetUser().Id);
 
-            _procedureDb.UpdateExisitngModel(procedure);
+            _procedureDb.UpdateExistingModel(procedure);
             continue;
         }
 
@@ -341,7 +341,7 @@ public class ProcedureController : Controller
                 _notificationService.Add(title, stringMessage, NotificationReference.ActiveProcedures, _userService.GetUser().Id);
             }
 
-            _activeProcedureDb.UpdateExisitngModel(activeProcedure);
+            _activeProcedureDb.UpdateExistingModel(activeProcedure);
         }
 
         _activeProcedureDb.SaveChanges();

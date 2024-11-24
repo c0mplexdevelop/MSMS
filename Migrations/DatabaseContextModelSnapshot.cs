@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace MSMS.Migrations.LabMigrations
+namespace MSMS.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
     partial class DatabaseContextModelSnapshot : ModelSnapshot
@@ -96,6 +96,9 @@ namespace MSMS.Migrations.LabMigrations
                     b.Property<int>("MedicalRecordId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("MedicalRecordId1")
+                        .HasColumnType("int");
+
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
@@ -106,9 +109,33 @@ namespace MSMS.Migrations.LabMigrations
 
                     b.HasIndex("MedicalRecordId");
 
+                    b.HasIndex("MedicalRecordId1");
+
                     b.HasIndex("PatientId");
 
-                    b.ToTable("Diagnosis");
+                    b.ToTable("Diagnoses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DiagnosisDetails = "Chickenpox Varicella",
+                            Doctor = "",
+                            MedicalRecordId = 1,
+                            Notes = "high Fever and Fatigue",
+                            PatientId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DiagnosisDetails = "Influenza",
+                            Doctor = "",
+                            MedicalRecordId = 2,
+                            Notes = "Mucus on tne alveoli.",
+                            PatientId = 2
+                        });
                 });
 
             modelBuilder.Entity("MSMS.Models.Diagnosis.MedicalRecord", b =>
@@ -149,7 +176,27 @@ namespace MSMS.Migrations.LabMigrations
                     b.HasIndex("PatientId")
                         .IsUnique();
 
-                    b.ToTable("MedicalRecord");
+                    b.ToTable("MedicalRecords");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2024, 11, 24, 7, 42, 54, 732, DateTimeKind.Utc).AddTicks(6336),
+                            CurrentMedications = "Paracetamol",
+                            Doctor = "Dr. Juan Dela Cruz",
+                            PatientId = 1,
+                            UpdatedAt = new DateTime(2024, 11, 24, 7, 42, 54, 732, DateTimeKind.Utc).AddTicks(6337)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2024, 11, 24, 7, 42, 54, 732, DateTimeKind.Utc).AddTicks(6338),
+                            CurrentMedications = "Paracetamol",
+                            Doctor = "Dra. Maria Daniella De Los Santos",
+                            PatientId = 2,
+                            UpdatedAt = new DateTime(2024, 11, 24, 7, 42, 54, 732, DateTimeKind.Utc).AddTicks(6339)
+                        });
                 });
 
             modelBuilder.Entity("MSMS.Models.Diagnosis.Patient", b =>
@@ -406,7 +453,7 @@ namespace MSMS.Migrations.LabMigrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateOnly(2024, 11, 22),
+                            CreatedAt = new DateOnly(2024, 11, 24),
                             Message = "Hello, World!",
                             ReferenceType = 0,
                             Title = "",
@@ -445,14 +492,14 @@ namespace MSMS.Migrations.LabMigrations
                             Id = 1,
                             PatientId = 1,
                             ProcedureId = 1,
-                            ProcedureServiceDateTime = new DateTime(2024, 11, 22, 22, 26, 52, 7, DateTimeKind.Local).AddTicks(3622)
+                            ProcedureServiceDateTime = new DateTime(2024, 11, 24, 15, 42, 54, 732, DateTimeKind.Local).AddTicks(6496)
                         },
                         new
                         {
                             Id = 2,
                             PatientId = 2,
                             ProcedureId = 1,
-                            ProcedureServiceDateTime = new DateTime(2024, 11, 21, 22, 26, 52, 7, DateTimeKind.Local).AddTicks(3623)
+                            ProcedureServiceDateTime = new DateTime(2024, 11, 23, 15, 42, 54, 732, DateTimeKind.Local).AddTicks(6497)
                         });
                 });
 
@@ -510,11 +557,17 @@ namespace MSMS.Migrations.LabMigrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MSMS.Models.Diagnosis.MedicalRecord", "MedicalRecord")
+                        .WithMany()
+                        .HasForeignKey("MedicalRecordId1");
+
                     b.HasOne("MSMS.Models.Diagnosis.Patient", "Patient")
                         .WithMany()
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("MedicalRecord");
 
                     b.Navigation("Patient");
                 });

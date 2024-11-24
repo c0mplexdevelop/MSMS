@@ -41,17 +41,28 @@
             </span>
         </div>
         <div class="diagnosis-container">
-            @if (Model.MedicalRecord is not null)
-                @for (int i = 0; i < Model.MedicalRecord.Diagnoses?.Count(); i++)
+            <form asp-action="AddDiagnosis" class="diagnosis-form" asp-route-id="@Model.Id" method="post">
+                @if (Model.MedicalRecord is not null)
                 {
-                    var diagnosis = Model.MedicalRecord.Diagnoses.ElementAt(i);
-                    <div class="diagnosis">
-                        <a href="/Diagnosis/@diagnosis.Id">
-                            <input type="text" value="@diagnosis.CreatedAt" readonly>
-                            <input type="text" value="@diagnosis.DiagnosisDetails" readonly>
-                        </a>
+                    @for (int i = 0; i < Model.MedicalRecord.Diagnoses?.Count(); i++)
+                    {
+                        var diagnosis = Model.MedicalRecord.Diagnoses.ElementAt(i);
+                        <div class="diagnosis">
+                            <a class="diagnosis-anchor" asp-action="DiagnosisForm" asp-route-diagnosisId="@diagnosis.Id" asp-route-patientId="@Model.Id">
+                                <input class="date-input" type="text" value="@diagnosis.CreatedAt" readonly>
+                                <input class="diag-input" type="text" value="@diagnosis.DiagnosisDetails" readonly>
+                            </a>
+                        </div>
+                    }
+
+                    <div id="button-div">
+                        <button class="diagnosis-submit" type="submit">Add Diagnosis</button>
                     </div>
+
                 }
+            </form>
+            
+                
         </div>
     </div>
 </div>

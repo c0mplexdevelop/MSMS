@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace MSMS.Migrations.LabMigrations
+namespace MSMS.Migrations
 {
     /// <inheritdoc />
     public partial class InitialMigration : Migration
@@ -96,7 +96,7 @@ namespace MSMS.Migrations.LabMigrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MedicalRecord",
+                name: "MedicalRecords",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -112,9 +112,9 @@ namespace MSMS.Migrations.LabMigrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MedicalRecord", x => x.Id);
+                    table.PrimaryKey("PK_MedicalRecords", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MedicalRecord_Patients_PatientId",
+                        name: "FK_MedicalRecords_Patients_PatientId",
                         column: x => x.PatientId,
                         principalTable: "Patients",
                         principalColumn: "Id",
@@ -199,29 +199,35 @@ namespace MSMS.Migrations.LabMigrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Diagnosis",
+                name: "Diagnoses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PatientId = table.Column<int>(type: "int", nullable: false),
+                    MedicalRecordId = table.Column<int>(type: "int", nullable: false),
                     DiagnosisDetails = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Doctor = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MedicalRecordId = table.Column<int>(type: "int", nullable: false)
+                    MedicalRecordId1 = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Diagnosis", x => x.Id);
+                    table.PrimaryKey("PK_Diagnoses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Diagnosis_MedicalRecord_MedicalRecordId",
+                        name: "FK_Diagnoses_MedicalRecords_MedicalRecordId",
                         column: x => x.MedicalRecordId,
-                        principalTable: "MedicalRecord",
+                        principalTable: "MedicalRecords",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Diagnosis_Patients_PatientId",
+                        name: "FK_Diagnoses_MedicalRecords_MedicalRecordId1",
+                        column: x => x.MedicalRecordId1,
+                        principalTable: "MedicalRecords",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Diagnoses_Patients_PatientId",
                         column: x => x.PatientId,
                         principalTable: "Patients",
                         principalColumn: "Id");
@@ -232,8 +238,8 @@ namespace MSMS.Migrations.LabMigrations
                 columns: new[] { "Id", "Age", "BloodPressure", "ContactNumber", "DateOfBirth", "EmergencyContact", "EmergencyPerson", "EmergencyRelationship", "Employer", "FamilyHistory", "FirstName", "Gender", "Height", "InsuranceDetails", "LastName", "MiddleName", "Occupation", "ParentGuardianContact", "ParentGuardianName", "PastMedicalHistory", "PrimaryCareProvider", "SpouseName", "Weight" },
                 values: new object[,]
                 {
-                    { 1, null, null, "1234567890", new DateTime(1980, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, null, "John", 0, null, null, "Smith", "Doe", null, null, null, null, null, null, null },
-                    { 2, null, null, "0987654321", new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, null, "Jane", 1, null, null, "Smith", "Doe", null, null, null, null, null, null, null }
+                    { 1, 40, null, "1234567890", new DateTime(1980, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, null, "John", 0, null, null, "Smith", "Doe", null, null, null, null, null, null, null },
+                    { 2, 30, null, "0987654321", new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, null, "Jane", 1, null, null, "Smith", "Doe", null, null, null, null, null, null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -268,8 +274,17 @@ namespace MSMS.Migrations.LabMigrations
                 columns: new[] { "Id", "PatientId", "ProcedureId", "ProcedureServiceDateTime" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, new DateTime(2024, 11, 22, 22, 11, 6, 232, DateTimeKind.Local).AddTicks(5666) },
-                    { 2, 2, 1, new DateTime(2024, 11, 21, 22, 11, 6, 232, DateTimeKind.Local).AddTicks(5667) }
+                    { 1, 1, 1, new DateTime(2024, 11, 24, 15, 42, 54, 732, DateTimeKind.Local).AddTicks(6496) },
+                    { 2, 2, 1, new DateTime(2024, 11, 23, 15, 42, 54, 732, DateTimeKind.Local).AddTicks(6497) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "MedicalRecords",
+                columns: new[] { "Id", "CreatedAt", "CurrentMedications", "Doctor", "MedicalHistory", "Notes", "PatientId", "RecordDetails", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 11, 24, 7, 42, 54, 732, DateTimeKind.Utc).AddTicks(6336), "Paracetamol", "Dr. Juan Dela Cruz", null, null, 1, null, new DateTime(2024, 11, 24, 7, 42, 54, 732, DateTimeKind.Utc).AddTicks(6337) },
+                    { 2, new DateTime(2024, 11, 24, 7, 42, 54, 732, DateTimeKind.Utc).AddTicks(6338), "Paracetamol", "Dra. Maria Daniella De Los Santos", null, null, 2, null, new DateTime(2024, 11, 24, 7, 42, 54, 732, DateTimeKind.Utc).AddTicks(6339) }
                 });
 
             migrationBuilder.InsertData(
@@ -284,7 +299,16 @@ namespace MSMS.Migrations.LabMigrations
             migrationBuilder.InsertData(
                 table: "Notifications",
                 columns: new[] { "Id", "CreatedAt", "Message", "ReferenceType", "Title", "UserId" },
-                values: new object[] { 1, new DateOnly(2024, 11, 22), "Hello, World!", 0, "", 1 });
+                values: new object[] { 1, new DateOnly(2024, 11, 24), "Hello, World!", 0, "", 1 });
+
+            migrationBuilder.InsertData(
+                table: "Diagnoses",
+                columns: new[] { "Id", "CreatedAt", "DiagnosisDetails", "Doctor", "MedicalRecordId", "MedicalRecordId1", "Notes", "PatientId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Chickenpox Varicella", "", 1, null, "high Fever and Fatigue", 1 },
+                    { 2, new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Influenza", "", 2, null, "Mucus on tne alveoli.", 2 }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ActiveProcedures_PatientId",
@@ -297,18 +321,23 @@ namespace MSMS.Migrations.LabMigrations
                 column: "ProcedureId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Diagnosis_MedicalRecordId",
-                table: "Diagnosis",
+                name: "IX_Diagnoses_MedicalRecordId",
+                table: "Diagnoses",
                 column: "MedicalRecordId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Diagnosis_PatientId",
-                table: "Diagnosis",
+                name: "IX_Diagnoses_MedicalRecordId1",
+                table: "Diagnoses",
+                column: "MedicalRecordId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Diagnoses_PatientId",
+                table: "Diagnoses",
                 column: "PatientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MedicalRecord_PatientId",
-                table: "MedicalRecord",
+                name: "IX_MedicalRecords_PatientId",
+                table: "MedicalRecords",
                 column: "PatientId",
                 unique: true);
 
@@ -330,7 +359,7 @@ namespace MSMS.Migrations.LabMigrations
                 name: "ActiveProcedures");
 
             migrationBuilder.DropTable(
-                name: "Diagnosis");
+                name: "Diagnoses");
 
             migrationBuilder.DropTable(
                 name: "Medicines");
@@ -342,7 +371,7 @@ namespace MSMS.Migrations.LabMigrations
                 name: "Procedure");
 
             migrationBuilder.DropTable(
-                name: "MedicalRecord");
+                name: "MedicalRecords");
 
             migrationBuilder.DropTable(
                 name: "Suppliers");

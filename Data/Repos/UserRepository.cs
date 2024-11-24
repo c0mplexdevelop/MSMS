@@ -51,7 +51,7 @@ public class UserRepository : IUserDatabaseRepository
         context.SaveChanges();
     }
 
-    public void UpdateExisitngModel(User model)
+    public void UpdateExistingModel(User model)
     {
         context.Users.Update(model);
     }

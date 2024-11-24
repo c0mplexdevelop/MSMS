@@ -25,7 +25,7 @@ public class SupplierRepository : IDatabaseRepository<Supplier>
         context.SaveChanges();
     }
 
-    public void UpdateExisitngModel(Supplier model)
+    public void UpdateExistingModel(Supplier model)
     {
         context.Suppliers.Update(model);
     }

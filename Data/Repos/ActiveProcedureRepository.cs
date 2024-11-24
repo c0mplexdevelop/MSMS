@@ -54,7 +54,7 @@ public class ActiveProcedureRepository : IActiveProcedureDatabaseRepository
         context.SaveChanges();
     }
 
-    public void UpdateExisitngModel(ActiveProcedure model)
+    public void UpdateExistingModel(ActiveProcedure model)
     {
         var entry = context.ActiveProcedures.Include(ap => ap.Patient).Include(ap => ap.Procedure).SingleOrDefault(ap => ap.Id == model.Id);
         context.Entry(entry).CurrentValues.SetValues(model);

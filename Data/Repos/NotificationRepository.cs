@@ -49,7 +49,7 @@ public class NotificationRepository : INotificationDatabaseRepository
         context.SaveChanges();
     }
 
-    public void UpdateExisitngModel(Notification model)
+    public void UpdateExistingModel(Notification model)
     {
         var entry = context.Procedure.Find(model.Id)!;
         context.Entry(entry).CurrentValues.SetValues(model);

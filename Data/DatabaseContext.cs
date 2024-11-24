@@ -19,6 +19,8 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
     public DbSet<ActiveProcedure> ActiveProcedures { get; set; }
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<Diagnosis> Diagnoses { get; set; }
+    public DbSet<MedicalRecord> MedicalRecords { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -30,8 +32,11 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
         modelBuilder.Entity<ActiveProcedure>().HasOne(n => n.Procedure).WithMany().HasForeignKey(n => n.ProcedureId);
         modelBuilder.Entity<ActiveProcedure>().HasOne(n => n.Patient).WithMany().HasForeignKey(n => n.PatientId);
 
+        modelBuilder.Entity<Diagnosis>().Property(entity => entity.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<Diagnosis>().HasOne(n => n.Patient).WithMany().HasForeignKey(n => n.PatientId).OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<Diagnosis>().HasOne(n => n.MedicalRecord).WithMany(mr => mr.Diagnoses).HasForeignKey(n => n.MedicalRecordId).OnDelete(DeleteBehavior.NoAction);
 
+        modelBuilder.Entity<MedicalRecord>().Property(entity => entity.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<MedicalRecord>().HasOne(mr => mr.Patient).WithOne(p => p.MedicalRecord);
         modelBuilder.Entity<MedicalRecord>().HasMany(mr => mr.Diagnoses).WithOne().IsRequired().OnDelete(DeleteBehavior.Cascade);
 
@@ -85,7 +90,8 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 Age = 40,
                 ContactNumber = "1234567890",
                 DateOfBirth = new DateTime(1980, 1, 1),
-                Gender = Gender.Male
+                Gender = Gender.Male,
+                
             },
             new Patient
             {
@@ -96,7 +102,51 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 Age = 30,
                 ContactNumber = "0987654321",
                 DateOfBirth = new DateTime(1990, 1, 1),
-                Gender = Gender.Female
+                Gender = Gender.Female,
+                
+            });
+
+        modelBuilder.Entity<MedicalRecord>().HasData(
+            new MedicalRecord
+            {
+                Id = 1,
+                PatientId = 1,
+                Doctor = "Dr. John Doe",
+
+                CurrentMedications = "Paracetamol",
+
+            },
+            new MedicalRecord
+            {
+                Id = 2,
+                PatientId = 2,
+                Doctor = "Dra. Jane Doe",
+                CurrentMedications = "Paracetamol",
+
+            });
+
+        modelBuilder.Entity<Diagnosis>().HasData(           
+            new Diagnosis
+            {
+                Id = 1,
+                DiagnosisDetails = "Chickenpox Varicella",
+                Doctor = "Dr. John Doe",
+                Notes = @"high Fever and Fatigue",
+                CreatedAt = new DateTime(2021, 1, 1),
+                PatientId = 1,
+                MedicalRecordId = 1
+            },
+            
+            new Diagnosis
+            {
+                Id = 2,
+                DiagnosisDetails = "Influenza",
+                Doctor = "Dra. Jane Doe",
+                Notes = @"Mucus on tne alveoli.",
+                CreatedAt = new DateTime(2021, 1, 1),
+                PatientId = 2,
+                MedicalRecordId = 2
+
             });
 
         modelBuilder.Entity<Procedure>().HasData(

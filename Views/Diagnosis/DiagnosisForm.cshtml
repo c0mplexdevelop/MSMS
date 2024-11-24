@@ -1,0 +1,81 @@
+﻿@model MSMS.Models.Diagnosis.DiagnosisViewModel
+
+<div class="container">
+    <div class="record-container">
+        <h1>Medical Record</h1>
+        <form asp-action="SaveDiagnosis" method="post">
+            <input type="hidden" asp-for="Patient.Id" />
+            <input type="hidden" asp-for="Patient.FirstName" />
+            <input type="hidden" asp-for="Patient.MiddleName" />
+            <input type="hidden" asp-for="Patient.LastName" />
+            <input type="hidden" asp-for="Patient.DateOfBirth" />
+            <input type="hidden" asp-for="Patient.Age" />
+            <input type="hidden" asp-for="Patient.ContactNumber" />
+            <input type="hidden" asp-for="Patient.MedicalRecord.Id" value="@Model.Diagnosis.MedicalRecordId"/>
+            <input type="hidden" asp-for="Patient.MedicalRecord.Doctor" value="@Model.Diagnosis.Doctor" id="medicalRecordDoctor" />
+            <input type="hidden" asp-for="Diagnosis.Id" value="@Model.Diagnosis.Id">
+            <input type="hidden" asp-for="Diagnosis.PatientId" value="@Model.Diagnosis.PatientId">
+            <input type="hidden" asp-for="Diagnosis.CreatedAt" value="@Model.Diagnosis.CreatedAt">
+            <input type="hidden" asp-for="Diagnosis.MedicalRecordId" />
+            <input type="hidden" asp-for="Diagnosis.MedicalRecord" />
+
+            <div class="patient-container">
+                <div class="patient-info">
+                    <label for="first-name"> First Name:</label>
+                    <input type="text" id="first-name" value="@Model.Patient.FirstName" disabled>
+                </div>
+                <div class="patient-info">
+                    <label for="middle-name">Middle Name:</label>
+                    <input type="text" id="middle-name" value="@(Model.Patient.MiddleName ?? "")" disabled>
+                </div>
+                <div class="patient-info">
+                    <label for="last-name">Last Name:</label>
+                    <input type="text" id="last-name" value="@Model.Patient.LastName" disabled>
+                </div>
+                <div class="patient-info">
+                    <label for="date-of-birth">Date of Birth:</label>
+                    <input type="date" id="date-of-birth" value="@Model.Patient.DateOfBirth.ToString("yyyy-MM-dd")" disabled>
+                </div>
+                <div class="patient-info">
+                    <label for="age">Age: </label>
+                    <input type="text" id="age" value="@Model.Patient.Age" disabled>
+                </div>
+                <div class="patient-info">
+                    <label for="contact-number">Contact Number: </label>
+                    <input type="text" id="contact-number" value="@Model.Patient.ContactNumber" disabled>
+                </div>
+            </div>
+            <div class="info-container">
+                <div class="diagnosis-container">
+                    <p class="diagnosis-header">Diagnosis:</p>
+                    <textarea asp-for="Diagnosis.DiagnosisDetails" class="diagnosis-textarea" rows="6">@Model.Diagnosis.DiagnosisDetails</textarea>
+                </div>
+
+                <div class="diagnosis-container">
+                    <p class="diagnosis-header">Notes:</p>
+                    <textarea asp-for="Diagnosis.Notes" class="diagnosis-textarea" rows="6">@Model.Diagnosis.Notes</textarea>
+                </div>
+
+                <div class="diagnosis-container">
+                    <p class="diagnosis-header">Performing Physician:</p>
+                    <input class="doctor-input" id="diagnosisDoctor" type="text" asp-for="Diagnosis.Doctor">
+                    <span class="text-error" asp-validation-for="Diagnosis.Doctor"></span>
+                </div>
+                <button type="submit" class="submit-button">Return to Medical Record</button>
+            </div>
+            
+
+        </form>
+    </div>
+    
+
+</div>
+
+<script>
+    document.getElementById("diagnosisDoctor").addEventListener("input", function() 
+    { 
+        var diagnosisDoctorValue = this.value; 
+        document.getElementById("medicalRecordDoctor").value = diagnosisDoctorValue;
+        console.log(document.getElementById("medicalRecordDoctor").value);
+    });
+</script>

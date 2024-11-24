@@ -13,6 +13,10 @@
 	align-items: center;
 }
 
+.div-table-row:nth-child(n+3) {
+	margin-top: 0.5rem;
+}
+
 
 .div-table-row {
 	width: 100%;
@@ -54,3 +58,12 @@
 	color: red;
 	font-weight: bold
 }
+
+.anchor, .anchor:visited, .anchor:active{
+	text-decoration: none;
+	color: inherit;
+}
+
+	.anchor:hover {
+		background-color: #ABE5F861
+	}

@@ -6,8 +6,8 @@
 
 <div class="container">
     <div class="div-grid">
-        <div class="div-table-row">
-            <div class="div-table-cell header">
+        <div class="div-table-row" id="header-row">
+            <div class="div-table-cell header" >
                 <span>
                     Patient Id
                 </span>
@@ -35,7 +35,7 @@
         </div>
         @foreach (var patient in Model.Patients)
         {
-            <a href="/Diagnosis/PatientMedicalRecord/@patient.Id" class="div-table-row">
+            <a href="/Diagnosis/PatientMedicalRecord/@patient.Id" class="div-table-row anchor">
                 <div class="div-table-cell">
                     <span>@patient.Id</span>
                 </div>
@@ -53,6 +53,7 @@
                 </div>
             </a>
         }
+
     </div>
 
    

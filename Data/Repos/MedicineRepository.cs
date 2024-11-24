@@ -107,7 +107,7 @@ public class MedicineRepository : IMedicineDatabaseRepository
         context.SaveChanges();
     }
 
-    public void UpdateExisitngModel(Medicine model)
+    public void UpdateExistingModel(Medicine model)
     {
         context.Medicines.Update(model);
     }

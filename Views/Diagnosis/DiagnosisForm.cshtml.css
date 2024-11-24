@@ -2,7 +2,6 @@
 	width: 80%;
 	height: 99%;
 	background-color: #DFF8FF;
-
 }
 
 	.container h1 {
@@ -17,24 +16,21 @@
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	grid-template-rows: repeat(2, 1fr);
-
 	grid-gap: 1rem;
 }
 
 .patient-info {
 	display: flex;
-	
 	gap: 0.5rem;
 }
 
-.patient-info input{
-	flex: 1;
-}
+	.patient-info input {
+		flex: 1;
+	}
 
 .diagnosis-header {
-	display: grid;
-	grid-template-columns: 10% 3% repeat(4, 1fr);
-	padding-left: 2rem;
+	display: inline-block;
+	margin: 0;
 }
 
 	.diagnosis-header :nth-child(1) {
@@ -46,30 +42,21 @@
 	}
 
 .diagnosis-container {
+	width: 80%;
 	padding: 2rem;
+	display: flex;
+	flex-direction: column;
+	padding-top: 1rem;
+	justify-self: center;
+	align-self: center;
+}
 
+.info-container {
 	display: flex;
 	flex-direction: column;
 
-	padding-top: 1rem;
-
-	gap: 1rem;
-}
-
-.diagnosis-submit {
-	width: 20%;
-	padding: 0.5rem;
-	background-color: #B1F6FB;
-	border-radius: 1rem;
-
-	font-family: Inter;
-}
-
-#button-div {
-	display: flex;
-	align-items: center;
 	justify-content: center;
-
+	align-items: center;
 }
 
 .diagnosis {
@@ -87,9 +74,24 @@
 
 .diagnosis-anchor input {
 	border: 1px solid gray;
-	padding: 0.3rem;
+	padding: 1rem;
 	border-radius: 1rem;
-	cursor: pointer;
+
+	height: 10px;
+
+}
+
+.submit-button {
+	width: auto;
+	margin-top: 1rem;
+	border: none;
+	background-color: #80D2DB;
+	padding: 2rem;
+	font-size: 1.5rem;
+	font-family: Inter;
+	font-weight: 600;
+	color: white;
+	border-radius: 1.5rem;
 }
 
 /*display: grid;

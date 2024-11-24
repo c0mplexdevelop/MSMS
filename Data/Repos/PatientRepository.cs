@@ -1,4 +1,5 @@
-﻿using MSMS.Models.Diagnosis;
+﻿using Microsoft.EntityFrameworkCore;
+using MSMS.Models.Diagnosis;
 
 namespace MSMS.Data.Repos;
 
@@ -22,7 +23,7 @@ public class PatientRepository : IPatientDatabaseRepository
 
     public IEnumerable<Patient> GetAll()
     {
-        return [.. context.Patients];
+        return [.. context.Patients.Include(p => p.MedicalRecord)];
     }
 
     public Patient? GetByContactNumber(string contactNumber)
@@ -32,7 +33,7 @@ public class PatientRepository : IPatientDatabaseRepository
 
     public Patient? GetById(int id)
     {
-        return context.Patients.Find(id);
+        return context.Patients.Include(p => p.MedicalRecord).ThenInclude(mr => mr.Diagnoses).First(p => p.Id == id);
     }
 
     public Patient? GetByIdWithNoTracking(int id)
@@ -50,9 +51,11 @@ public class PatientRepository : IPatientDatabaseRepository
         context.SaveChanges();
     }
 
-    public void UpdateExisitngModel(Patient model)
+    public void UpdateExistingModel(Patient model)
     {
-        
+        var entry = context.Procedure.Find(model.Id)!;
+        context.Entry(entry).CurrentValues.SetValues(model);
+        SaveChanges();
     }
 
 

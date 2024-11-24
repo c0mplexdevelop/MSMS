@@ -57,7 +57,7 @@ public class ProcedureRepository : IProcedureDatabaseRepository
         context.SaveChanges();
     }
 
-    public void UpdateExisitngModel(Procedure model)
+    public void UpdateExistingModel(Procedure model)
     {
         // So when we submit the form, the model is not being tracked by the context
         // This calls the context and attaches the exisitng model in the context for update
