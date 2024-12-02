@@ -21,6 +21,7 @@ public class DiagnosisController : Controller
 
     public IActionResult MedicalRecords()
     {
+        ViewBag.ActiveSection = "Diagnosis";
         var patients = _patientDb.GetAll();
         var model = new PatientViewModel
         {

@@ -1,22 +1,42 @@
 ﻿.input-form {
-	width: 60%;
+	width: 80%;
 	height: 2rem;
 	border: none;
 	border-bottom: 1px solid #000000;
 	background-color: transparent;
 	margin-bottom: 1rem;
-	flex-grow: 1;
 	transition: 150ms ease-in;
+
+	font-family: Inter;
 }
 
 	.input-form:focus {
 		background-color: white;
-		transform: scale(1.1);
-		flex-grow: 2;
+		flex-grow: 1;
+		transform: scaleX(1.05);
 		border-radius: 0.4rem;
+
+		font-size: 1.05rem;
+
+		outline: none;
 	}
 
 .text-error {
 	color: #dc3545 !important
 }
 
+.login-form {
+	width: 100%;
+	height: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.login-logo {
+	height: 100%;
+	object-fit: contain;
+	overflow: hidden;
+	border-radius: 100%;
+}

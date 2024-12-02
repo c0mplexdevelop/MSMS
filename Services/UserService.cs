@@ -70,7 +70,7 @@ public class UserService
         //return _currentUser;
     }
 
-    public void SetUser(User user)
+    public void SetUser(User? user)
     {
         _currentUser = user;
     }

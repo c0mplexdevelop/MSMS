@@ -12,18 +12,30 @@
     <link rel="stylesheet" href="~/css/LoginTagHelper.css">
 </head>
 
-<div class="login-container">
-    <form class="form" asp-action="Login">
-        @* <span><h1>MSMS</h1></span> *@
-        <div class="form-group">
-            <input type="text" class="input-form" id="username" placeholder="Enter username" asp-for="Username">
-            <span asp-validation-for="Username" class="text-error"></span>
-        </div>
-        <div class="form-group">
-            <input type="password" class="input-form" id="password" placeholder="Password" asp-for="Password">
-            <span asp-validation-for="Password" class="text-error"></span>
-        </div>
-        <button type="submit" class="submit-button" >Submit</button>
-    </form>
-</div>
 
+<div class="login-box">
+    <div class="login-container">
+        <div class="login-header">
+            <img src="~/images/logo.png" class="logo" />
+
+            <h1>
+                MSMS Login
+            </h1>
+        </div>
+        <form class="login-form" asp-action="Login" style="grid-area: form">
+            
+            @* <span><h1>MSMS</h1></span> *@
+            <div class="form-group">
+                <label class="form-label" for="username">Username:</label>
+                <input type="text" class="input-form" id="username" placeholder="Enter username" asp-for="Username">
+                <span asp-validation-for="Username" class="text-error"></span>
+            </div>
+            <div class="form-group">
+                <label for="password" class="form-label">Password:</label>
+                <input type="password" class="input-form" id="password" placeholder="Password" asp-for="Password">
+                <span asp-validation-for="Password" class="text-error"></span>
+            </div>
+            <button type="submit" class="submit-button">Submit</button>
+        </form>
+    </div>
+</div>

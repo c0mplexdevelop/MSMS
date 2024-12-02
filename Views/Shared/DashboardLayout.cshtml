@@ -1,7 +1,7 @@
 ﻿@using MSMS.Models.Shared
 @{
     var activeSection = TempData["ActiveSection"] as string;
-    var menuModel = new MenuModel {ActiveSection = activeSection};
+    var menuModel = new MenuModel { ActiveSection = activeSection };
 }
 
 <!DOCTYPE html>
@@ -13,20 +13,64 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MSMS.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/DashboardTagHelper.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" asp-append-version="true" />
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <header class="nav-bar">
-            <div class="logo">
-                <img src="" alt="">
-                <span></span>
+        <nav class="nav-bar">
+            <div class="logo-container">
+                <img src="~/images/logo.png" class="logo" alt="" />
+                <span class="logo-span"> MSMS </span>
             </div>
-        </header>
+
+            <div class="user-container">
+                <div class="ham-container" id="ham-menu">
+                    <div class="ham-dropdown">
+                        <div class="anchor-container">
+                            <object type="image/svg+xml" data="~/images/Dashboard/logout.svg" class="dropdown-logo"> </object> @* logout icon *@
+                            <a asp-action="Logout" asp-controller="Login">Logout</a>
+
+                        </div>
+                        <div class="anchor-container">
+                            <img /> @* logout icon *@
+                            <a asp-action="Diagnosis" asp-controller="MedicalRecords">Laboratory</a>
+
+                        </div>
+                        <div class="anchor-container">
+                            <img /> @* logout icon *@
+                            <a asp-action="Logout" asp-controller="Login">Logout</a>
+
+                        </div>
+                        <div class="anchor-container">
+                            <img /> @* logout icon *@
+                            <a asp-action="Logout" asp-controller="Login">Logout</a>
+
+                        </div>
+                        <div class="anchor-container">
+                            <img /> @* logout icon *@
+                            <a asp-action="Logout" asp-controller="Login">Logout</a>
+
+                        </div>
+                    </div>
+
+                    <div class="ham-menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+
+
+
+                <div class="user-avatar">
+                    <img src="~/images/Dashboard/user-avatar.svg" alt="">
+                </div>
+            </div>
+        </nav>
         <div class="menu">
-            <partial name="Sidebar"  model="menuModel" />
+            <partial name="Sidebar" model="menuModel" />
         </div>
         <div class="main">
             @RenderBody()

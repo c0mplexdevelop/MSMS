@@ -1,22 +1,10 @@
-﻿//document.addEventListener('DOMContentLoaded', () => {
-//    const menuItems = document.querySelectorAll('.menu-item');
+﻿const hamMenu = document.querySelector('.ham-menu');
+const hamDropDown = document.querySelector('.ham-dropdown');
+const hamContainer = document.querySelector('.ham-container');
 
-//    const currentActiveItem = sessionStorage.getItem('activeMenuItem');
-//    if (currentActiveItem) {
-//        menuItems.forEach(item => {
-//            if (item.getAttribute('data-ref') == currentActiveItem) {
-//                item.classList.add('active');
-//            } else {
-//                item.classList.remove('active');
-//            }
-//        });
-//    }
+hamMenu.addEventListener('click', () => {
 
-//    menuItems.forEach(item => {
-//        item.addEventListener('click', () => {
-//            sessionStorage.setItem('activeMenuItem', item.getAttribute('data-ref'));
-//            menuItems.forEach(item => item.classList.remove('active'));
-//            item.classList.add('active');
-//        })
-//    })
-//});
+    hamMenu.classList.toggle('active');
+    hamDropDown.classList.toggle('active');
+    hamContainer.classList.toggle('active');
+});

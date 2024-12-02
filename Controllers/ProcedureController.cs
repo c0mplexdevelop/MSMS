@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MSMS.Data.Repos;
 using MSMS.Models.Notification;
@@ -8,6 +9,7 @@ using Newtonsoft.Json;
 
 namespace MSMS.Controllers;
 
+[Authorize]
 public class ProcedureController : Controller
 {
     private readonly IProcedureDatabaseRepository _procedureDb;
@@ -136,13 +138,13 @@ public class ProcedureController : Controller
 
 
             var title = "Procedure";
-            var stringMessage = @$"""
+            var stringMessage = @$"
                 UPDATED:    {existingModel.ProcedureName} -> {procedure.ProcedureName} 
                             {existingModel.ProcedurePrice} -> {procedure.ProcedurePrice}
                             {existingModel.ProcedureDescription} -> {procedure.ProcedureDescription}
                             
                             {existingModel.ProcedureNotes} -> {procedure.ProcedureNotes}
-            ""
+            
             ";
 
             _notificationService.Add(title, stringMessage, NotificationReference.Procedures, _userService.GetUser().Id);

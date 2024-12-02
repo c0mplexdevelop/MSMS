@@ -29,13 +29,19 @@ public class LoginController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Login()
+    public IActionResult Login()
     {
-        HttpContext.Session.Clear();
-        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return View();
     }
-        
+
+    public async Task<IActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        HttpContext.Session.Clear();
+        _userService.SetUser(null);
+        return RedirectToAction("Login");
+    }
+
     [HttpPost]
     public async Task<IActionResult> Login(UserCredential model)
     {

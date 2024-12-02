@@ -2,11 +2,6 @@
 	--active-columns: 7
 }
 
-@font-face {
-	font-family: Inter;
-	src: url("../font/Inter.ttf");
-}
-
 .menu-item .logo img {
 	width: auto;
 	max-width: 100%;
@@ -63,5 +58,26 @@
 
 .text-error {
 	color: #dc3545 !important
+}
+
+.logo {
+	height: 85%;
+	object-fit: contain;
+	overflow: hidden;
+	border-radius: 100%;
+}
+
+.anchor-container a {
+	text-decoration: none;
+	color: black;
+	font-family: Inter;
+
+	text-align: center;
+}
+
+.dropdown-logo {
+	height: 3%;
+	object-fit: contain;
+	overflow: hidden;
 }
 
