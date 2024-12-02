@@ -1,8 +1,8 @@
 ﻿using MSMS.Models.Notification;
 
-namespace MSMS.Data.Repos;
+namespace MSMS.Data.Interfaces;
 
-public interface INotificationDatabaseRepository : IDatabaseRepository<Notification> 
+public interface INotificationDatabaseRepository : IDatabaseRepository<Notification>
 {
     IEnumerable<Notification> GetNotificationByReference(NotificationReference type);
 }

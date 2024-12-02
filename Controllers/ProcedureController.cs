@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using MSMS.Data.Repos;
+using MSMS.Data.Interfaces;
 using MSMS.Models.Notification;
 using MSMS.Models.Procedures;
 using MSMS.Services;
-using Newtonsoft.Json;
 
 namespace MSMS.Controllers;
 
@@ -207,7 +206,6 @@ public class ProcedureController : Controller
     [HttpPost]
     public IActionResult AddActiveProcedures(int addAmount)
     {
-        GetPatientById(1);
         var procedures = _procedureDb.GetAll();
         _logger.LogInformation($"Procedures: {procedures.Count()}");
         var patients = _patientDb.GetAll();
@@ -348,23 +346,5 @@ public class ProcedureController : Controller
 
         _activeProcedureDb.SaveChanges();
         return RedirectToAction("Notifications", "Dashboard");
-    }
-
-    [HttpGet]
-    public IActionResult GetPatientById(int id)
-    {
-        var patient = _patientDb.GetById(id);
-        var json = Json(patient);
-        _logger.LogInformation(JsonConvert.SerializeObject(json.Value));
-        return json;
-    }
-
-    [HttpGet]
-    public IActionResult GetProcedureById(int id)
-    {
-        var procedure = _procedureDb.GetById(id);
-        var json = Json(procedure);
-        _logger.LogInformation(JsonConvert.SerializeObject(json.Value));
-        return json;
     }
 }

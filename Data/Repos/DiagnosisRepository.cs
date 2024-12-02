@@ -1,4 +1,5 @@
-﻿using MSMS.Models.Diagnosis;
+﻿using MSMS.Data.Interfaces;
+using MSMS.Models.Diagnosis;
 
 namespace MSMS.Data.Repos;
 

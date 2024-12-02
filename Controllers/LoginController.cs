@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using MSMS.Data;
-using MSMS.Data.Repos;
+using MSMS.Data.Interfaces;
 using MSMS.Models;
 using MSMS.Models.Dashboard;
 using MSMS.Models.Login;

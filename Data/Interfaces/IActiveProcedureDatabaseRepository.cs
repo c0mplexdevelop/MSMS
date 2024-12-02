@@ -1,7 +1,7 @@
 ﻿using MSMS.Models.Diagnosis;
 using MSMS.Models.Procedures;
 
-namespace MSMS.Data.Repos;
+namespace MSMS.Data.Interfaces;
 
 public interface IActiveProcedureDatabaseRepository : IDatabaseRepository<ActiveProcedure>
 {

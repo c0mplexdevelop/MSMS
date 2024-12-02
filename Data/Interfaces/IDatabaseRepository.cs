@@ -1,6 +1,6 @@
 ﻿using MSMS.Models.Login;
 
-namespace MSMS.Data.Repos;
+namespace MSMS.Data.Interfaces;
 
 public interface IDatabaseRepository<T> where T : class
 {

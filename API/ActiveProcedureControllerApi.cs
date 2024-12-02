@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MSMS.Data.Repos;
+using MSMS.Data.Interfaces;
 using MSMS.Models.Procedures;
 
 namespace MSMS.API;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ActiveProcedureControllerApi : ControllerBase
+public class ActiveProcedureController : ControllerBase
 {
     private readonly IActiveProcedureDatabaseRepository _activeProcedureDb;
 
-    public ActiveProcedureControllerApi(IActiveProcedureDatabaseRepository activeProcedureDb)
+    public ActiveProcedureController(IActiveProcedureDatabaseRepository activeProcedureDb)
     {
         _activeProcedureDb = activeProcedureDb;
     }
@@ -22,7 +22,7 @@ public class ActiveProcedureControllerApi : ControllerBase
         return Ok(activeProcedures);
     }
 
-    [HttpGet("get/{id}")]
+    [HttpGet("get")]
     public ActionResult<ActiveProcedure?> GetActiveProcedure(int id)
     {
         var activeProcedure = _activeProcedureDb.GetById(id);
@@ -32,6 +32,7 @@ public class ActiveProcedureControllerApi : ControllerBase
         }
         return Ok(activeProcedure);
     }
+
     [HttpDelete("delete/{id}")]
     public ActionResult DeleteActiveProcedure(int id)
     {

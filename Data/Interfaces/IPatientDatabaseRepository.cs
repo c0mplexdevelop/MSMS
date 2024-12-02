@@ -1,7 +1,6 @@
-﻿
-using MSMS.Models.Diagnosis;
+﻿using MSMS.Models.Diagnosis;
 
-namespace MSMS.Data.Repos;
+namespace MSMS.Data.Interfaces;
 
 public interface IPatientDatabaseRepository : IDatabaseRepository<Patient>
 {

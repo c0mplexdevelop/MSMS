@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MSMS.Data.Repos;
+using MSMS.Data.Interfaces;
 using MSMS.Models.Diagnosis;
 
 namespace MSMS.Controllers;

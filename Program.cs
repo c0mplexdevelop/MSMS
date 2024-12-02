@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using MSMS.Data;
+using MSMS.Data.Interfaces;
 using MSMS.Data.Repos;
 using MSMS.Models.Diagnosis;
 using MSMS.Models.MedicineInventory;
@@ -34,6 +35,7 @@ builder.Services.AddScoped<IPatientDatabaseRepository, PatientRepository>();
 builder.Services.AddScoped<IProcedureDatabaseRepository, ProcedureRepository>();
 builder.Services.AddScoped<INotificationDatabaseRepository, NotificationRepository>();
 builder.Services.AddScoped<IActiveProcedureDatabaseRepository, ActiveProcedureRepository>();
+builder.Services.AddScoped<IMedicalRecordsRepository, MedicalRecordsRepository>();
 builder.Services.AddScoped<IDatabaseRepository<Diagnosis>, DiagnosisRepository>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<UserService>();

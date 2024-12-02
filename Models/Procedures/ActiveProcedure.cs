@@ -18,6 +18,7 @@ public class ActiveProcedure
     public int ProcedureId { get; set; }
     public Procedure Procedure { get; set; } = null!;
     public DateTime ProcedureServiceDateTime { get; set; }
+    public bool IsPaid { get; set; } = false;
 
     public static bool operator ==(ActiveProcedure left, ActiveProcedure right)
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MSMS.Data.Repos;
+using MSMS.Data.Interfaces;
 using MSMS.Models.Dashboard;
 using MSMS.Models.MedicineInventory;
 using MSMS.Models.Notification;

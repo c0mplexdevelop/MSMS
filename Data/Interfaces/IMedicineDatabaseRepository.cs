@@ -1,6 +1,6 @@
 ﻿using MSMS.Models.MedicineInventory;
 
-namespace MSMS.Data.Repos;
+namespace MSMS.Data.Interfaces;
 
 public interface IMedicineDatabaseRepository : IDatabaseRepository<Medicine>
 {

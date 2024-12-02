@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MSMS.Data.Interfaces;
 using MSMS.Models.Diagnosis;
 
 namespace MSMS.Data.Repos;
