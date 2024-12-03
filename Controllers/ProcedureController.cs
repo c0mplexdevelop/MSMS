@@ -8,7 +8,6 @@ using MSMS.Services;
 
 namespace MSMS.Controllers;
 
-[Authorize]
 public class ProcedureController : Controller
 {
     private readonly IProcedureDatabaseRepository _procedureDb;
@@ -146,7 +145,7 @@ public class ProcedureController : Controller
             
             ";
 
-            _notificationService.Add(title, stringMessage, NotificationReference.Procedures, _userService.GetUser().Id);
+            _notificationService.Add(title, stringMessage, NotificationReference.Procedures, _userService.GetUser().EmployeeNumber);
 
             _procedureDb.UpdateExistingModel(procedure);
             continue;
@@ -298,7 +297,7 @@ public class ProcedureController : Controller
                                     Active Procedure Date: {activeProcedure.ProcedureServiceDateTime}
                 ";
                 _activeProcedureDb.Add(activeProcedure);
-                _notificationService.Add(title, notificationMessage, NotificationReference.ActiveProcedures, _userService.GetUser().Id);
+                _notificationService.Add(title, notificationMessage, NotificationReference.ActiveProcedures, _userService.GetUser().EmployeeNumber);
                 continue;
             }
 
@@ -338,7 +337,7 @@ public class ProcedureController : Controller
             if(notificationList.Any())
             {
                 var stringMessage = string.Join("\n", notificationList);
-                _notificationService.Add(title, stringMessage, NotificationReference.ActiveProcedures, _userService.GetUser().Id);
+                _notificationService.Add(title, stringMessage, NotificationReference.ActiveProcedures, _userService.GetUser().EmployeeNumber);
             }
 
             _activeProcedureDb.UpdateExistingModel(activeProcedure);

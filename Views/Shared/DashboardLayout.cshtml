@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MSMS.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/DashboardTagHelper.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/MedicalRecordTagHelper.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" asp-append-version="true" />
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" rel="stylesheet">
@@ -28,11 +29,11 @@
             <div class="user-container">
                 <div class="ham-container" id="ham-menu">
                     <div class="ham-dropdown">
-                        <div class="anchor-container">
-                            <object type="image/svg+xml" data="~/images/Dashboard/logout.svg" class="dropdown-logo"> </object> @* logout icon *@
-                            <a asp-action="Logout" asp-controller="Login">Logout</a>
-
-                        </div>
+                        <a asp-action="Logout" asp-controller="Login" class="anchor-container">
+                            @* <object type="image/svg+xml" data="~/images/Dashboard/logout.svg" class="dropdown-logo"> </object> *@ @* logout icon *@
+                            <img src="~/images/Dashboard/logout.svg" class="dropdown-logo"/>
+                            <span>Logout</span>
+                        </a>
                         <div class="anchor-container">
                             <img /> @* logout icon *@
                             <a asp-action="Diagnosis" asp-controller="MedicalRecords">Laboratory</a>

@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MSMS.Data.Interfaces;
+using MSMS.Models.Login;
 using MSMS.Models.Notification;
+using MSMS.Services;
 
 namespace MSMS.Data.Repos;
 
@@ -8,11 +10,14 @@ public class NotificationRepository : INotificationDatabaseRepository
 {
     private readonly DatabaseContext context;
     private ILogger<NotificationRepository> logger;
+    private AccountService accountService;
 
-    public NotificationRepository(DatabaseContext context, ILogger<NotificationRepository> logger)
+    public NotificationRepository(  DatabaseContext context, ILogger<NotificationRepository> logger,
+                                    AccountService accountService)
     {
         this.context = context;
         this.logger = logger;
+        this.accountService = accountService;
     }
 
     public void Add(Notification model)
@@ -27,7 +32,18 @@ public class NotificationRepository : INotificationDatabaseRepository
 
     public IEnumerable<Notification> GetAll()
     {
-        return [.. context.Notifications.Include(notif => notif.User)];
+        var notifications = context.Notifications.ToList();
+        for(int i = 0; i < notifications.Count; i++)
+        {
+            var notification = notifications[i];
+            notification.User = new Account
+            {
+                Name = "Test",
+            };
+        }
+
+        return notifications;
+        //return [.. context.Notifications.Include(notif => notif.User)];
     }
 
     public Notification? GetById(int id)
@@ -54,5 +70,11 @@ public class NotificationRepository : INotificationDatabaseRepository
     {
         var entry = context.Procedure.Find(model.Id)!;
         context.Entry(entry).CurrentValues.SetValues(model);
+    }
+
+    public async Task<Account> GetAccountById(int accountId)
+    {
+        var accounts = await accountService.GetAllAccounts();
+        return accounts.First(a => a.EmployeeNumber == accountId);
     }
 }

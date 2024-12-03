@@ -15,34 +15,34 @@ public class UserRepository : IUserDatabaseRepository
         this.context = context;
     }
 
-    public void Add(User model)
+    public void Add(Account model)
     {
         throw new NotImplementedException();
     }
 
-    public void Delete(User model)
+    public void Delete(Account model)
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<User> GetAll()
+    public IEnumerable<Account> GetAll()
     {
         {
-            return [.. context.Users];
+            return [.. context.Accounts];
         }
     }
 
-    public User? GetByCredential(UserCredential userCredential)
+    public Account? GetByCredential(UserCredential userCredential)
     {
-        return context.Users.Where(user => user.Username == userCredential.Username && user.Password == userCredential.Password).AsNoTracking().FirstOrDefault();
+        return context.Accounts.Where(user => user.Username == userCredential.Username && user.Password == userCredential.Password).AsNoTracking().FirstOrDefault();
     }
 
-    public User GetById(int id)
+    public Account GetById(int id)
     {
         throw new NotImplementedException();
     }
 
-    public User? GetByIdWithNoTracking(int id)
+    public Account? GetByIdWithNoTracking(int id)
     {
         throw new NotImplementedException();
     }
@@ -52,8 +52,8 @@ public class UserRepository : IUserDatabaseRepository
         context.SaveChanges();
     }
 
-    public void UpdateExistingModel(User model)
+    public void UpdateExistingModel(Account model)
     {
-        context.Users.Update(model);
+        context.Accounts.Update(model);
     }
 }

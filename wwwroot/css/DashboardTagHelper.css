@@ -67,6 +67,39 @@
 	border-radius: 100%;
 }
 
+.anchor-container {
+	width: 100%;
+	height: 100%;
+	margin-top: 0.5rem;
+	padding: 0.5rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	text-decoration: none;
+	color: black;
+	font-family: Inter;
+
+	border-radius: 1rem;
+
+	transition: 150ms ease-in-out;
+}
+
+	
+.anchor-container:hover {
+	color: white;
+}
+
+	.anchor-container:nth-child(1):hover img {
+		filter: invert(100%) sepia(5%) saturate(7431%) hue-rotate(179deg) brightness(115%) contrast(114%);
+	}
+
+
+	.anchor-container:nth-child(1):hover {
+		background-color: red;
+	}
+
+
 .anchor-container a {
 	text-decoration: none;
 	color: black;
@@ -76,7 +109,7 @@
 }
 
 .dropdown-logo {
-	height: 3%;
+	width: 20%;
 	object-fit: contain;
 	overflow: hidden;
 }

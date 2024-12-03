@@ -1,4 +1,6 @@
 ﻿using MSMS.Models.Dashboard;
+using MSMS.Models.Login;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MSMS.Models.Notification;
 
@@ -10,6 +12,7 @@ public class Notification
     public string Message { get; set; } = string.Empty;
     public NotificationReference ReferenceType { get; set; }
 
-    public int UserId { get; set; }
-    public User User { get; set; } = null!; // Will be used to know which user done the action for notification.
+    public int AccountId { get; set; }
+    [NotMapped]
+    public Account User { get; set; } = null!; // Will be used to know which user done the action for notification.
 }

@@ -22,56 +22,61 @@ namespace MSMS.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MSMS.Models.Dashboard.User", b =>
+            modelBuilder.Entity("Account", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("EmployeeNumber")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeNumber"));
 
-                    b.Property<string>("Email")
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ConfirmPassword")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ContactNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmployeeID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ErrorMessage")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
+                    b.Property<string>("Schedule")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Specialization")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubSystem")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("Id");
+                    b.HasKey("EmployeeNumber");
 
-                    b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "",
-                            Name = "John Doe",
-                            Password = "test123",
-                            Role = 0,
-                            Username = "c0mplex"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "",
-                            Name = "Jane Doe",
-                            Password = "test123",
-                            Role = 3,
-                            Username = "test123"
-                        });
+                    b.ToTable("Accounts");
                 });
 
             modelBuilder.Entity("MSMS.Models.Diagnosis.Diagnosis", b =>
@@ -121,7 +126,7 @@ namespace MSMS.Migrations
                             Id = 1,
                             CreatedAt = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DiagnosisDetails = "Chickenpox Varicella",
-                            Doctor = "",
+                            Doctor = "Dr. John Doe",
                             MedicalRecordId = 1,
                             Notes = "high Fever and Fatigue",
                             PatientId = 1
@@ -131,7 +136,7 @@ namespace MSMS.Migrations
                             Id = 2,
                             CreatedAt = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DiagnosisDetails = "Influenza",
-                            Doctor = "",
+                            Doctor = "Dra. Jane Doe",
                             MedicalRecordId = 2,
                             Notes = "Mucus on tne alveoli.",
                             PatientId = 2
@@ -182,20 +187,20 @@ namespace MSMS.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 11, 24, 7, 42, 54, 732, DateTimeKind.Utc).AddTicks(6336),
+                            CreatedAt = new DateTime(2024, 12, 3, 16, 41, 56, 825, DateTimeKind.Utc).AddTicks(2995),
                             CurrentMedications = "Paracetamol",
-                            Doctor = "Dr. Juan Dela Cruz",
+                            Doctor = "Dr. John Doe",
                             PatientId = 1,
-                            UpdatedAt = new DateTime(2024, 11, 24, 7, 42, 54, 732, DateTimeKind.Utc).AddTicks(6337)
+                            UpdatedAt = new DateTime(2024, 12, 3, 16, 41, 56, 825, DateTimeKind.Utc).AddTicks(2996)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 11, 24, 7, 42, 54, 732, DateTimeKind.Utc).AddTicks(6338),
+                            CreatedAt = new DateTime(2024, 12, 3, 16, 41, 56, 825, DateTimeKind.Utc).AddTicks(2997),
                             CurrentMedications = "Paracetamol",
-                            Doctor = "Dra. Maria Daniella De Los Santos",
+                            Doctor = "Dra. Jane Doe",
                             PatientId = 2,
-                            UpdatedAt = new DateTime(2024, 11, 24, 7, 42, 54, 732, DateTimeKind.Utc).AddTicks(6339)
+                            UpdatedAt = new DateTime(2024, 12, 3, 16, 41, 56, 825, DateTimeKind.Utc).AddTicks(2998)
                         });
                 });
 
@@ -426,6 +431,9 @@ namespace MSMS.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
                     b.Property<DateOnly>("CreatedAt")
                         .HasColumnType("date");
 
@@ -440,12 +448,7 @@ namespace MSMS.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Notifications");
 
@@ -453,11 +456,11 @@ namespace MSMS.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateOnly(2024, 11, 24),
+                            AccountId = 1,
+                            CreatedAt = new DateOnly(2024, 12, 4),
                             Message = "Hello, World!",
                             ReferenceType = 0,
-                            Title = "",
-                            UserId = 1
+                            Title = ""
                         });
                 });
 
@@ -468,6 +471,9 @@ namespace MSMS.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
 
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
@@ -490,16 +496,18 @@ namespace MSMS.Migrations
                         new
                         {
                             Id = 1,
+                            IsPaid = false,
                             PatientId = 1,
                             ProcedureId = 1,
-                            ProcedureServiceDateTime = new DateTime(2024, 11, 24, 15, 42, 54, 732, DateTimeKind.Local).AddTicks(6496)
+                            ProcedureServiceDateTime = new DateTime(2024, 12, 4, 0, 41, 56, 825, DateTimeKind.Local).AddTicks(3085)
                         },
                         new
                         {
                             Id = 2,
+                            IsPaid = false,
                             PatientId = 2,
                             ProcedureId = 1,
-                            ProcedureServiceDateTime = new DateTime(2024, 11, 23, 15, 42, 54, 732, DateTimeKind.Local).AddTicks(6497)
+                            ProcedureServiceDateTime = new DateTime(2024, 12, 3, 0, 41, 56, 825, DateTimeKind.Local).AddTicks(3086)
                         });
                 });
 
@@ -592,17 +600,6 @@ namespace MSMS.Migrations
                         .IsRequired();
 
                     b.Navigation("Supplier");
-                });
-
-            modelBuilder.Entity("MSMS.Models.Notification.Notification", b =>
-                {
-                    b.HasOne("MSMS.Models.Dashboard.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MSMS.Models.Procedures.ActiveProcedure", b =>

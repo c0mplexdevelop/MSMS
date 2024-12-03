@@ -19,13 +19,16 @@ public class LoginController : Controller
 
     private readonly IUserDatabaseRepository _userRepository;
     private readonly UserService _userService;
+    private readonly AccountService _accountService;
 
-    public LoginController(ILogger<LoginController> logger, IUserDatabaseRepository databaseRepository, UserService userService)
+    public LoginController(ILogger<LoginController> logger, IUserDatabaseRepository databaseRepository,
+                            UserService userService, AccountService accountService)
 
     {
         _logger = logger;
         _userRepository = databaseRepository;
         _userService = userService;
+        _accountService = accountService;
     }
 
     [HttpGet]
@@ -45,8 +48,28 @@ public class LoginController : Controller
     [HttpPost]
     public async Task<IActionResult> Login(UserCredential model)
     {
-        var queriedUser = _userRepository.GetByCredential(model);
-        
+        //var queriedUser = _userRepository.GetByCredential(model);
+        //var queriedUser = accounts.FirstOrDefault(a => a.Username == model.Username && a.Password == model.Password);
+
+        var userJson = """
+            { 
+                "employeeNumber":4,
+                "employeeID":"2023/EMP/0003",
+                "Name":"John Doe",
+                "Username":"c0mplex",
+                "contactNo":"09073840346",
+                "email":"johndoe@gmail.com",
+                "address":"43 Ofelia St.",
+                "specialization":null,
+                "schedule":null,
+                "Role":"Doctor",
+                "subSystem":"MSMS",
+                "Password":"test123",
+                "newPassword":null,
+                "confirmPassword":null
+            }
+            """;
+        var queriedUser = JsonSerializer.Deserialize<Account>(userJson);
         _logger.LogInformation(model.ToString());
         _logger.LogDebug(queriedUser?.ToString());
         _logger.LogInformation(queriedUser is null ? "No queried User" : queriedUser.ToString());
@@ -55,10 +78,13 @@ public class LoginController : Controller
             return View(model);
         }
         HttpContext.Session.SetString("User", JsonSerializer.Serialize(queriedUser));
+        _logger.LogInformation($"User Name: {queriedUser.Name}");
+
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, queriedUser!.Name),
-            new Claim(ClaimTypes.Role, queriedUser!.Role.ToString())
+            new Claim(ClaimTypes.Name, queriedUser!.Name!),
+            new Claim(ClaimTypes.Role, queriedUser!.Role!)
+
         };
 
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -77,6 +103,9 @@ public class LoginController : Controller
             authProperties);
 
         _userService.SetUser(queriedUser);
+
+        claims.ForEach(c => _logger.LogInformation($"{c.Type}: {c.Value}"));
+        _logger.LogInformation($"IsAuth: {User.Identity.IsAuthenticated}");
 
         return RedirectToAction("Notifications", "Dashboard", queriedUser);
     }

@@ -41,6 +41,8 @@ public class DashboardController : Controller
     [HttpGet]
     public IActionResult Notifications()
     {
+        _logger.LogInformation($"IsAuth: {User.Identity.IsAuthenticated}");
+
         ViewBag.ActiveSection = "Notifications";
 
         var notifications = _notificationDb.GetAll().OrderByDescending(notif => notif.Id);
@@ -54,8 +56,6 @@ public class DashboardController : Controller
         };
         return View(model);
     }
-
-    [Authorize(Roles = "Staff, Admin")]
 
     public IActionResult Inventory(CombinedMedicineSupplierModel model)
     {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MSMS.Data.Interfaces;
+using MSMS.Models.Diagnosis;
 using MSMS.Models.Procedures;
 
 namespace MSMS.API;
@@ -22,15 +23,22 @@ public class ActiveProcedureController : ControllerBase
         return Ok(activeProcedures);
     }
 
-    [HttpGet("get")]
-    public ActionResult<ActiveProcedure?> GetActiveProcedure(int id)
+    [HttpGet("get/patient/{patientId}")]
+    public ActionResult<IEnumerable<ActiveProcedure?>> GetActiveProceduresOfPatient(int patientId)
     {
-        var activeProcedure = _activeProcedureDb.GetById(id);
-        if (activeProcedure is null)
+        var activeProcedures = _activeProcedureDb.GetAllProceduresOfPatientByPatientId(patientId);
+        return Ok(activeProcedures);
+    }
+
+    [HttpGet("get/patient/notpaid/{patientId}")]
+    public ActionResult<IEnumerable<ActiveProcedure?>> GetNotPaidActiveProceduresOfPatient(int patientId)
+    {
+        var activeProcedures = _activeProcedureDb.GetAllNotPaidProceduresOfPatientByPatientId(patientId);
+        if(activeProcedures is null)
         {
             return NotFound();
         }
-        return Ok(activeProcedure);
+        return Ok(activeProcedures);
     }
 
     [HttpDelete("delete/{id}")]

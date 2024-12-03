@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MSMS.Auth;
 using MSMS.Data;
 using MSMS.Models.Dashboard;
+using MSMS.Models.Login;
 using System.Security.Claims;
 using System.Text.Json;
 
@@ -11,32 +12,38 @@ namespace MSMS.Services;
 public class UserService
 {
     private readonly IHttpContextAccessor _httpContext;
-    private User? _currentUser;
+    private Account? _currentUser;
+    private ILogger<UserService> _logger;
 
-    public UserService(IHttpContextAccessor httpContext)
+    public UserService(IHttpContextAccessor httpContext, ILogger<UserService> logger)
     {
         _httpContext = httpContext;
+        _logger = logger;
     }
 
-    public User GetUser()
+    public Account GetUser()
     {
+        _logger.LogInformation("Getting User..");
         if (_currentUser is not null) return _currentUser;
 
         var userJson = _httpContext.HttpContext.Session.GetString("User");
         if(userJson is not null)
         {
-            _currentUser = JsonSerializer.Deserialize<User>(userJson)!;
+            _currentUser = JsonSerializer.Deserialize<Account>(userJson)!;
             return _currentUser;
         }
 
         var name = _httpContext.HttpContext.User.FindFirst(ClaimTypes.Name);
         var role = _httpContext.HttpContext.User.FindFirst(ClaimTypes.Role);
 
-        _currentUser = new User
+        _currentUser = new Account
         {
             Username = name?.Value ?? "Anonymous",
-            Role = role is null ? UserRole.Guest : Enum.Parse<UserRole>(role.Value)
+            Role = role is null ? UserRole.Guest.ToString() : Enum.Parse<UserRole>(role.Value).ToString()
         };
+
+        _logger.LogInformation($"User: {_currentUser.Username}, {_currentUser.Role}");
+
 
         return _currentUser;
         //if (_currentUser is not null) return _currentUser;
@@ -70,7 +77,7 @@ public class UserService
         //return _currentUser;
     }
 
-    public void SetUser(User? user)
+    public void SetUser(Account? user)
     {
         _currentUser = user;
     }

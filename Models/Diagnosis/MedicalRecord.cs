@@ -24,6 +24,7 @@ public class MedicalRecord
     //Navigation Properties
     public virtual Patient? Patient { get; set; }
     
+    //public virtual ICollection<LabRecord>? LabRecords { get; set; }
     public virtual ICollection<Diagnosis>? Diagnoses { get; set; }
 }
 

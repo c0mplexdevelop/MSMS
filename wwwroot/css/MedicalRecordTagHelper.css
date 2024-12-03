@@ -1,0 +1,29 @@
+﻿.record-doctor-input {
+	padding: 0.5rem;
+}
+
+.diagnosis-anchor {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 10% 3% repeat(4, 1fr);
+	grid-template-areas:
+		"date .  diag diag diag diag";
+	cursor: default;
+}
+
+.diagnosis-form {
+	display: flex;
+	flex-direction: column;
+	gap: inherit;
+}
+
+.diagnosis-textarea {
+	resize: none;
+	font-family: Inter;
+}
+
+.doctor-input {
+	padding: 0.5rem;
+	text-align: center;
+	font-size: 1.5rem;
+}

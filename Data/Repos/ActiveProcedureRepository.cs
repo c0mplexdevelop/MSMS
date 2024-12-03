@@ -30,14 +30,19 @@ public class ActiveProcedureRepository : IActiveProcedureDatabaseRepository
         return context.ActiveProcedures.Include(x => x.Patient).Include(x => x.Procedure).ToList();
     }
 
-    public IEnumerable<ActiveProcedure?> GetAllPatientsOfProcedure(Procedure procedure)
+    public IEnumerable<ActiveProcedure?> GetAllNotPaidProceduresOfPatientByPatientId(int patientid)
     {
-        throw new NotImplementedException();
+        return context.ActiveProcedures.Include(x => x.Patient).Include(x => x.Procedure).Where(x => x.Patient.Id == patientid && x.IsPaid == false);
     }
 
-    public IEnumerable<ActiveProcedure?> GetAllProceduresOfPatient(Patient patient)
+    public IEnumerable<ActiveProcedure?> GetAllPatientsOfProcedureByProcedureId(int id)
     {
-        throw new NotImplementedException();
+        return [.. context.ActiveProcedures.Include(x => x.Patient).Include(x => x.Procedure).Where(x => x.Procedure.Id == id)];
+    }
+
+    public IEnumerable<ActiveProcedure?> GetAllProceduresOfPatientByPatientId(int id)
+    {
+        return [.. context.ActiveProcedures.Include(x => x.Patient).Include(x => x.Procedure).Where(x => x.Patient.Id == id)];
     }
 
     public ActiveProcedure? GetById(int id)

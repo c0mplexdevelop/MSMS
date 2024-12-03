@@ -4,13 +4,16 @@
 }
 
 .div-grid {
+	--record-columns: 6;
 	display: grid;
-	grid-template-columns: repeat(5, 1fr);
+	grid-template-columns: repeat(var(--record-columns), 1fr);
 	grid: auto rows;
 	border: 1px solid black;
 	border-radius: 1rem;
 	justify-items: center;
 	align-items: center;
+
+	overflow-y: scroll;
 }
 
 .div-table-row:nth-child(n+3) {
@@ -20,9 +23,9 @@
 
 .div-table-row {
 	width: 100%;
-	grid-column: span 5;
+	grid-column: span var(--record-columns);
 	display: grid;
-	grid-template-columns: repeat(5, 1fr);
+	grid-template-columns: repeat(var(--record-columns), 1fr);
 }
 
 

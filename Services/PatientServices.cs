@@ -5,17 +5,18 @@ namespace MSMS.Services;
 
 public class PatientServices
 {
-    private readonly HttpClient _httpClient;
-    private const string BaseUrl = "https://(ip):7001/";
+    private readonly IHttpClientFactory _httpClientFactory;
+    
 
-    public PatientServices(HttpClient httpClient)
+    public PatientServices(IHttpClientFactory httpClientFactory)
     {
-        _httpClient = httpClient;
+        _httpClientFactory = httpClientFactory;
     }
 
     public async Task<IEnumerable<Patient>> GetAllPatients()
     {
-        var response = await _httpClient.GetAsync("api/patient/getall");
+        var client = _httpClientFactory.CreateClient("PMSClient");
+        var response = await client.GetAsync("/api/patients/getall");
         response.EnsureSuccessStatusCode();
         var patients = await response.Content.ReadFromJsonAsync<IEnumerable<Patient>>();
         return patients!;

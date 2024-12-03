@@ -4,24 +4,34 @@ using MSMS.Models.Diagnosis;
 
 namespace MSMS.API;
 
+[ApiController]
 [Route("api/[controller]")]
 public class MedicalRecordsController : ControllerBase
 {
 
     private readonly IMedicalRecordsRepository _medicalRecordsDb;
 
-    public MedicalRecordsController(IMedicalRecordsRepository patientDb)
+    public MedicalRecordsController(IMedicalRecordsRepository medicalRecordsRepository)
     {
-         _medicalRecordsDb = patientDb;
+         _medicalRecordsDb = medicalRecordsRepository;
     }
 
+    // GET: api/medicalrecords/getall
     [HttpGet("getall")]
     public ActionResult<IEnumerable<MedicalRecord>> GetAllMedicalRecord()
     {
-        var activeProcedures = _medicalRecordsDb.GetAll();
-        return Ok(activeProcedures);
+        var medicalRecords = _medicalRecordsDb.GetAll();
+        return Ok(medicalRecords);
     }
 
+    [HttpGet("getalltest")]
+    public ActionResult<int> GetAllMedicalRecordLength()
+    {
+        var count = _medicalRecordsDb.GetAll().Count();
+        return Ok(count);
+    }
+
+    // GET: api/MedicalRecords/get/{id}
     [HttpGet("get/{id}")]
     public ActionResult<MedicalRecord?> GetMedicalRecord(int id)
     {
@@ -41,6 +51,7 @@ public class MedicalRecordsController : ControllerBase
 
     private MedicalRecord? GetMedicalRecordOfPatientById(int id)
     {
+        //return _medicalRecordsDb.MedicalRecords.Find(id);
         return _medicalRecordsDb.GetById(id) ?? null;
     }
 }

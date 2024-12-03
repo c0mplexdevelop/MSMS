@@ -15,7 +15,13 @@ var localSqlServerConnString = builder.Configuration.GetConnectionString("LocalS
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddSession();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = false;
+    options.Cookie.IsEssential = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+});
 
 //var dbServerVersion = new MySqlServerVersion(new Version(8, 0, 29));
 builder.Services.AddDbContext<DatabaseContext>(
@@ -24,9 +30,7 @@ builder.Services.AddDbContext<DatabaseContext>(
     options => options.UseSqlServer(localSqlServerConnString).EnableSensitiveDataLogging()
     );
 
-builder.Services.AddDbContext<EMSDatabaseContext>(
-        options => options.UseSqlServer().EnableSensitiveDataLogging()
-    );
+builder.WebHost.UseUrls("http://192.168.193.100:5051", "http://192.168.193.100:7001");
 
 builder.Services.AddScoped<IUserDatabaseRepository, UserRepository>();
 builder.Services.AddScoped<IMedicineDatabaseRepository, MedicineRepository>();
@@ -39,27 +43,46 @@ builder.Services.AddScoped<IMedicalRecordsRepository, MedicalRecordsRepository>(
 builder.Services.AddScoped<IDatabaseRepository<Diagnosis>, DiagnosisRepository>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<PatientServices>();
+builder.Services.AddScoped<AccountService>();
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+builder.Services.AddHttpClient("PMSClient", client =>
+{
+    client.BaseAddress = new Uri("http://192.168.193.172:5000");
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).
-    AddCookie(options =>
+}).ConfigurePrimaryHttpMessageHandler(_ => new HttpClientHandler
+{
+    ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
+});
+
+builder.Services.AddHttpClient("EMSClient", client =>
+{
+    client.BaseAddress = new Uri("http://192.168.193.80:7089");
+}).ConfigurePrimaryHttpMessageHandler(_ => new HttpClientHandler
+{
+    ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
+});
+
+
+//builder.Services.AddHttpClient();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
     {
         options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
         options.SlidingExpiration = true;
+        options.Cookie.HttpOnly = false;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.None;
         options.LoginPath = "/Login/Login";
         options.AccessDeniedPath = "/Dashboard/AccessDenied";
     });
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
     options.AddPolicy("Staff", policy => policy.RequireAssertion(context => context.User.IsInRole("Admin") || context.User.IsInRole("Staff")));
     options.AddPolicy("Doctor", policy => policy.RequireAssertion(context => context.User.IsInRole("Admin") || context.User.IsInRole("Doctor")));
-
-
-
 });
 
 var app = builder.Build();

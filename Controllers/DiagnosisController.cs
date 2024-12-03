@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MSMS.Data.Interfaces;
 using MSMS.Models.Diagnosis;
+using MSMS.Services;
 
 namespace MSMS.Controllers;
 
@@ -9,37 +11,92 @@ public class DiagnosisController : Controller
     private readonly ILogger<DiagnosisController> _logger;
     private readonly IPatientDatabaseRepository _patientDb;
     private readonly IDatabaseRepository<Diagnosis> _diagnosisDb;
+    private readonly IMedicalRecordsRepository _medicalRecordsDb;
+    private readonly PatientServices _patientServices;
+
+    private static IEnumerable<Patient> _pmsPatients = new List<Patient>();
 
     public DiagnosisController( ILogger<DiagnosisController> logger, IPatientDatabaseRepository patientDb,
-                                IDatabaseRepository<Diagnosis> diagnosisDb)
+                                IDatabaseRepository<Diagnosis> diagnosisDb, PatientServices patientServices,
+                                IMedicalRecordsRepository medicalRecordsDb)
     {
         _logger = logger;
         _patientDb = patientDb;
         _diagnosisDb = diagnosisDb;
+        _patientServices = patientServices;
+        _medicalRecordsDb = medicalRecordsDb;
     }
 
 
-    public IActionResult MedicalRecords()
+    public async Task<IActionResult> MedicalRecords()
     {
         ViewBag.ActiveSection = "Diagnosis";
-        var patients = _patientDb.GetAll();
+        //if(_pmsPatients.Count() < 1)
+        //{ 
+        //    _pmsPatients = await _patientServices.GetAllPatients();
+        //}
+
+        //var model = new PatientViewModel
+        //{
+        //    Patients = _pmsPatients.ToList()
+        //};
+
         var model = new PatientViewModel
         {
-            Patients = patients.ToList()
+            Patients = _patientDb.GetAll().ToList()
         };
         return View(model);
     }
 
     public IActionResult PatientMedicalRecord(int id)
     {
-        var model = _patientDb.GetById(id)!;
-        _logger.LogInformation(model.MedicalRecord.Diagnoses!.Count.ToString());
+        //var model = _pmsPatients.First(p => p.Id == id);
+        var model = _patientDb.GetById(id);
         if (model is null)
         {
             return NotFound();
         }
-        model.MedicalRecord.Diagnoses = model.MedicalRecord.Diagnoses.OrderByDescending(d => d.CreatedAt).ToList();
+
+        var patientHasRecord = _medicalRecordsDb.PatientHasRecord(id);
+        if (patientHasRecord)
+        {
+            _logger.LogInformation("Patient has record");
+            model.MedicalRecord = _medicalRecordsDb.GetByPatientId(id)!;
+        } else if(model.MedicalRecord is null && !patientHasRecord)
+        {
+            _logger.LogInformation("Patient has no record");
+            var medicalRecord = new MedicalRecord
+            {
+                PatientId = model.Id,
+
+                Doctor = ""
+            };
+
+            _medicalRecordsDb.Add(medicalRecord);
+            _medicalRecordsDb.SaveChanges();
+            model.MedicalRecord = medicalRecord;
+        }
+        if(model.MedicalRecord!.Diagnoses is null)
+        {
+            model.MedicalRecord.Diagnoses = new List<Diagnosis>();
+            
+        }
+        _logger.LogInformation(model.MedicalRecord.Diagnoses?.Count.ToString());
+
+        model.MedicalRecord.Diagnoses = model.MedicalRecord.Diagnoses!.OrderByDescending(d => d.CreatedAt).ToList();
         return View(model);
+    }
+
+    [HttpPost]
+    public IActionResult SaveMedicalRecord(Patient model)
+    {
+        var medicalRecord = model.MedicalRecord;
+        medicalRecord!.Doctor = model.MedicalRecord.Doctor;
+        _logger.LogInformation("Saving..");
+        _medicalRecordsDb.UpdateExistingModel(medicalRecord);
+        _logger.LogInformation("Saved!");
+        _medicalRecordsDb.SaveChanges();
+        return RedirectToAction("PatientMedicalRecord", new { id = model.Id });
     }
 
     [HttpGet]

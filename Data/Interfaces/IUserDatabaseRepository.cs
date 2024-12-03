@@ -3,7 +3,7 @@ using MSMS.Models.Login;
 
 namespace MSMS.Data.Interfaces;
 
-public interface IUserDatabaseRepository : IDatabaseRepository<User>
+public interface IUserDatabaseRepository : IDatabaseRepository<Account>
 {
-    User? GetByCredential(UserCredential userCredential);
+    Account? GetByCredential(UserCredential userCredential);
 }

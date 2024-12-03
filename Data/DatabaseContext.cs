@@ -18,14 +18,13 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
     public DbSet<Procedure> Procedure { get; set; }
     public DbSet<ActiveProcedure> ActiveProcedures { get; set; }
     public DbSet<Notification> Notifications { get; set; }
-    public DbSet<User> Users { get; set; }
+    public DbSet<Account> Accounts { get; set; }
     public DbSet<Diagnosis> Diagnoses { get; set; }
     public DbSet<MedicalRecord> MedicalRecords { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Medicine>().HasOne(m => m.Supplier).WithMany(supplier => supplier.Medicines).HasForeignKey(m => m.SupplierId);
-        modelBuilder.Entity<Notification>().HasOne(n => n.User).WithMany().HasForeignKey(n => n.UserId);
 
         modelBuilder.Entity<Notification>().Property(entity => entity.Id).ValueGeneratedOnAdd();
 
@@ -125,7 +124,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
 
             });
 
-        modelBuilder.Entity<Diagnosis>().HasData(           
+        modelBuilder.Entity<Diagnosis>().HasData(
             new Diagnosis
             {
                 Id = 1,
@@ -136,7 +135,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 PatientId = 1,
                 MedicalRecordId = 1
             },
-            
+
             new Diagnosis
             {
                 Id = 2,
@@ -167,29 +166,11 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 ProcedureNotes = "Make Patient drink water till they excrete."
             });
 
-
-        modelBuilder.Entity<User>().HasData(
-            new()
-            {
-                Id = 1,
-                Name = "John Doe",
-                Username = "c0mplex",
-                Password = "test123",
-                Role = UserRole.Admin
-            },
-            new() {
-                Id = 2,
-                Name = "Jane Doe",
-                Username = "test123",
-                Password = "test123",
-                Role = UserRole.Guest
-            });
-
         modelBuilder.Entity<Notification>().HasData(
             new Notification
             {
                 Id = 1,
-                UserId = 1,
+                AccountId = 1,
                 Message = "Hello, World!",
                 CreatedAt = DateOnly.FromDateTime(DateTime.Now)
 

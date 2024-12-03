@@ -14,6 +14,48 @@ namespace MSMS.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Accounts",
+                columns: table => new
+                {
+                    EmployeeNumber = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EmployeeID = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ContactNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Specialization = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Schedule = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SubSystem = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    ErrorMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConfirmPassword = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Accounts", x => x.EmployeeNumber);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateOnly>(type: "date", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ReferenceType = table.Column<int>(type: "int", nullable: false),
+                    AccountId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Patients",
                 columns: table => new
                 {
@@ -79,23 +121,6 @@ namespace MSMS.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Role = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "MedicalRecords",
                 columns: table => new
                 {
@@ -129,7 +154,8 @@ namespace MSMS.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PatientId = table.Column<int>(type: "int", nullable: false),
                     ProcedureId = table.Column<int>(type: "int", nullable: false),
-                    ProcedureServiceDateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    ProcedureServiceDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsPaid = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -176,29 +202,6 @@ namespace MSMS.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Notifications",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateOnly>(type: "date", nullable: false),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReferenceType = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Notifications", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Notifications_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Diagnoses",
                 columns: table => new
                 {
@@ -234,6 +237,11 @@ namespace MSMS.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Notifications",
+                columns: new[] { "Id", "AccountId", "CreatedAt", "Message", "ReferenceType", "Title" },
+                values: new object[] { 1, 1, new DateOnly(2024, 12, 4), "Hello, World!", 0, "" });
+
+            migrationBuilder.InsertData(
                 table: "Patients",
                 columns: new[] { "Id", "Age", "BloodPressure", "ContactNumber", "DateOfBirth", "EmergencyContact", "EmergencyPerson", "EmergencyRelationship", "Employer", "FamilyHistory", "FirstName", "Gender", "Height", "InsuranceDetails", "LastName", "MiddleName", "Occupation", "ParentGuardianContact", "ParentGuardianName", "PastMedicalHistory", "PrimaryCareProvider", "SpouseName", "Weight" },
                 values: new object[,]
@@ -261,21 +269,12 @@ namespace MSMS.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "Email", "Name", "Password", "Role", "Username" },
-                values: new object[,]
-                {
-                    { 1, "", "John Doe", "test123", 0, "c0mplex" },
-                    { 2, "", "Jane Doe", "test123", 3, "test123" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "ActiveProcedures",
-                columns: new[] { "Id", "PatientId", "ProcedureId", "ProcedureServiceDateTime" },
+                columns: new[] { "Id", "IsPaid", "PatientId", "ProcedureId", "ProcedureServiceDateTime" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, new DateTime(2024, 11, 24, 15, 42, 54, 732, DateTimeKind.Local).AddTicks(6496) },
-                    { 2, 2, 1, new DateTime(2024, 11, 23, 15, 42, 54, 732, DateTimeKind.Local).AddTicks(6497) }
+                    { 1, false, 1, 1, new DateTime(2024, 12, 4, 0, 41, 56, 825, DateTimeKind.Local).AddTicks(3085) },
+                    { 2, false, 2, 1, new DateTime(2024, 12, 3, 0, 41, 56, 825, DateTimeKind.Local).AddTicks(3086) }
                 });
 
             migrationBuilder.InsertData(
@@ -283,8 +282,8 @@ namespace MSMS.Migrations
                 columns: new[] { "Id", "CreatedAt", "CurrentMedications", "Doctor", "MedicalHistory", "Notes", "PatientId", "RecordDetails", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 11, 24, 7, 42, 54, 732, DateTimeKind.Utc).AddTicks(6336), "Paracetamol", "Dr. Juan Dela Cruz", null, null, 1, null, new DateTime(2024, 11, 24, 7, 42, 54, 732, DateTimeKind.Utc).AddTicks(6337) },
-                    { 2, new DateTime(2024, 11, 24, 7, 42, 54, 732, DateTimeKind.Utc).AddTicks(6338), "Paracetamol", "Dra. Maria Daniella De Los Santos", null, null, 2, null, new DateTime(2024, 11, 24, 7, 42, 54, 732, DateTimeKind.Utc).AddTicks(6339) }
+                    { 1, new DateTime(2024, 12, 3, 16, 41, 56, 825, DateTimeKind.Utc).AddTicks(2995), "Paracetamol", "Dr. John Doe", null, null, 1, null, new DateTime(2024, 12, 3, 16, 41, 56, 825, DateTimeKind.Utc).AddTicks(2996) },
+                    { 2, new DateTime(2024, 12, 3, 16, 41, 56, 825, DateTimeKind.Utc).AddTicks(2997), "Paracetamol", "Dra. Jane Doe", null, null, 2, null, new DateTime(2024, 12, 3, 16, 41, 56, 825, DateTimeKind.Utc).AddTicks(2998) }
                 });
 
             migrationBuilder.InsertData(
@@ -297,17 +296,12 @@ namespace MSMS.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Notifications",
-                columns: new[] { "Id", "CreatedAt", "Message", "ReferenceType", "Title", "UserId" },
-                values: new object[] { 1, new DateOnly(2024, 11, 24), "Hello, World!", 0, "", 1 });
-
-            migrationBuilder.InsertData(
                 table: "Diagnoses",
                 columns: new[] { "Id", "CreatedAt", "DiagnosisDetails", "Doctor", "MedicalRecordId", "MedicalRecordId1", "Notes", "PatientId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Chickenpox Varicella", "", 1, null, "high Fever and Fatigue", 1 },
-                    { 2, new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Influenza", "", 2, null, "Mucus on tne alveoli.", 2 }
+                    { 1, new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Chickenpox Varicella", "Dr. John Doe", 1, null, "high Fever and Fatigue", 1 },
+                    { 2, new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Influenza", "Dra. Jane Doe", 2, null, "Mucus on tne alveoli.", 2 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -345,16 +339,14 @@ namespace MSMS.Migrations
                 name: "IX_Medicines_SupplierId",
                 table: "Medicines",
                 column: "SupplierId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Notifications_UserId",
-                table: "Notifications",
-                column: "UserId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Accounts");
+
             migrationBuilder.DropTable(
                 name: "ActiveProcedures");
 
@@ -375,9 +367,6 @@ namespace MSMS.Migrations
 
             migrationBuilder.DropTable(
                 name: "Suppliers");
-
-            migrationBuilder.DropTable(
-                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Patients");

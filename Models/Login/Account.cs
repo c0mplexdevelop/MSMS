@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
+namespace MSMS.Models.Login;
 public class Account
 {
     [Key]
@@ -8,7 +8,6 @@ public class Account
     public string? Name { get; set; }
 
     [Required(ErrorMessage = "Please enter your username or email address.")]
-    [StringLength(50, ErrorMessage = "Username cannot exceed 50 characters.")]
     public string Username { get; set; } = string.Empty;
 
     public string? ContactNo { get; set; }
@@ -22,15 +21,19 @@ public class Account
     public string? Role { get; set; }
 
     public string? SubSystem { get; set; }
-    [Required(ErrorMessage = "Please enter your password.")]
+    [Required(ErrorMessage = "Please enter your username or email address.")]
     [DataType(DataType.Password)]
-    [StringLength(100, MinimumLength = 8, ErrorMessage = "Password must be between 8 and 100 characters.")]
     public string Password { get; set; } = string.Empty;
+
 
     // Optional property for a generic error message, e.g., for invalid credentials
     public string? ErrorMessage { get; set; }
-    [Required]
-    [DataType(DataType.Password)]
-    [Compare("Password", ErrorMessage = "Password and Confirm Password do not match.")]
+    
     public string? ConfirmPassword { get; set; }
+
+    public override string ToString()
+    {
+
+        return $"{EmployeeNumber} - {Name}";
+    }
 }

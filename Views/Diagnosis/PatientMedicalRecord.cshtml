@@ -29,7 +29,31 @@
                 <label for="contact-number">Contact Number: </label>
                 <input type="text" id="contact-number" value="@Model.ContactNumber" disabled>
             </div>
+
         </div>
+
+        <form asp-action="SaveMedicalRecord" method="post">
+            <input type="submit" hidden/>
+            <input type="number" asp-for="Id" hidden/>
+            <input type="number" asp-for="MedicalRecord.Id" hidden />
+            <input type="text" asp-for="MedicalRecord.Doctor" id="medicalRecordDoctor" hidden />
+            <input type="text" asp-for="MedicalRecord.PatientId" hidden />
+            <div class="record-container" id="record-container-center">
+                <div class="doctor-container">
+                    <label for="doctor-detail">Performing Physician: </label>
+                    <input class="record-doctor-input" type="text" id="doctor-detail" asp-for="MedicalRecord.Doctor" />
+                </div>
+            </div>
+            <div class="record-container">
+                <label for="record-details">Record Details</label>
+                <textarea id="record-details" rows="10" cols="50" asp-for="MedicalRecord.RecordDetails"></textarea>
+            </div>
+
+            <div class="record-container">
+                <label for="medical-history">Medical History</label>
+                <textarea id="record-details" cols="30" rows="10" asp-for="MedicalRecord.MedicalHistory"></textarea>
+            </div>
+        </form>
 
         <div class="diagnosis-header">
             <span>
@@ -61,8 +85,8 @@
 
                 }
             </form>
-            
-                
+
+
         </div>
     </div>
 </div>

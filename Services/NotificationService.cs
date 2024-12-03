@@ -1,5 +1,6 @@
 ﻿using MSMS.Data.Interfaces;
 using MSMS.Models.Dashboard;
+using MSMS.Models.Login;
 using MSMS.Models.Notification;
 
 namespace MSMS.Services;
@@ -19,27 +20,27 @@ public class NotificationService
         _notificationDatabaseRepository.SaveChanges();
     }
 
-    public void Add(string title, string message, NotificationReference reference, int userID)
+    public void Add(string title, string message, NotificationReference reference, int accountID)
     {
         var notification = new Notification
         {
             Title = title,
             Message = message,
             ReferenceType = reference,
-            UserId = userID,
+            AccountId = accountID,
             CreatedAt = DateOnly.FromDateTime(DateTime.Now)
         };
 
         Add(notification);
     }
 
-    public void Add(NotificationReference reference, string message, User user)
+    public void Add(NotificationReference reference, string message, Account user)
     {
         var notification = new Notification
         {
             ReferenceType = reference,
             Message = message,
-            UserId = user.Id,
+            AccountId = user.EmployeeNumber,
         };
 
         Add(notification);
